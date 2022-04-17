@@ -7,6 +7,8 @@
     <router-link to="/signup">SignUp</router-link>
     |
     <router-link to="/login">LogIn</router-link>
+    |
+    <router-link to="/logout">LogOut</router-link>
   </nav>
   <router-view />
 </template>
