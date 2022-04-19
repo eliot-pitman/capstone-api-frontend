@@ -9,7 +9,7 @@ export default {
       user: [],
       info: [],
       favorites: [],
-      favoritesWeather: [],
+      favoritesWeather: "",
     };
   },
   created: function () {
@@ -17,22 +17,30 @@ export default {
       this.favorites = response.data;
       console.log("favorites", response.data);
     });
-    axios.get("/airports").then((response) => {
-      this.favoritesWeather = response.data;
-      console.log("airport weather", response.data);
-    });
   },
-  methods: {},
+  methods: {
+    getWeather: function () {
+      const headers = {
+        Authorization: "Bearer token(.env)",
+      };
+      axios.get("https://avwx.rest/api/metar/jfk", { headers }).then((response) => {
+        this.user = response.data;
+        console.log("favorite weather front end", response.data);
+      });
+    },
+  },
 };
 </script>
 
 <template>
   <div class="home">
     <h1>{{ message }}</h1>
+    <button @click="getWeather">front end test</button>
     <!-- <div v-for></div> -->
     <h2>{{ favorites }}</h2>
     <h1>favorites weather</h1>
-    <h2>{{ favoritesWeather }}</h2>
+    <div v-for="favoriteW in favoritesWeather" :key="favoriteW"></div>
+    <h2>{{ user }}</h2>
   </div>
 </template>
 
