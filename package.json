@@ -10,9 +10,11 @@
   "dependencies": {
     "axios": "^0.26.1",
     "bootstrap": "^3.4.1",
+    "bootstrap-vue": "^2.22.0",
     "core-js": "^3.8.3",
+    "jquery": "^3.6.0",
     "moment": "^2.29.3",
-    "vue": "^3.2.13",
+    "vue": "^3.2.33",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

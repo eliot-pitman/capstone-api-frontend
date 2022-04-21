@@ -34,12 +34,17 @@ export default {
 <template>
   <div class="user-info">
     <h1>{{ message }}</h1>
+    <img :src="`${user.avitar}`" alt="_blank" />
     <h2>Name: {{ user.name }}</h2>
     <h2>Email: {{ user.email }}</h2>
     <h2>Home Airport {{ user.home_airport }}</h2>
     <h2>Username: {{ user.username }}</h2>
-    <a :href="`${user.avitar}`"></a>
   </div>
 </template>
 
-<style></style>
+<style>
+img {
+  height: 150px;
+  width: 150px;
+}
+</style>

@@ -10,6 +10,7 @@ export default {
   },
   methods: {
     submit: function () {
+      console.log(this.newUserParams);
       axios
         .post("/users", this.newUserParams)
         .then((response) => {
@@ -50,6 +51,10 @@ export default {
       <div>
         <label>Password confirmation:</label>
         <input type="password" v-model="newUserParams.password_confirmation" />
+      </div>
+      <div>
+        <label>Avitar:</label>
+        <input type="text" v-model="newUserParams.avitar" />
       </div>
       <input type="submit" value="Submit" />
     </form>
