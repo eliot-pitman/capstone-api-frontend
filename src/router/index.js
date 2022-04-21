@@ -6,6 +6,7 @@ import LogOut from "../views/LogOut.vue";
 import UserInfo from "../views/UserInfo.vue";
 import AddAirport from "../views/AddAirport.vue";
 import LobbyMETAR from "../views/LobbyMETAR.vue";
+import ShowWeather from "../views/ShowWeather.vue";
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     path: "/",
     name: "LobbyMETAR",
     component: LobbyMETAR,
+  },
+  {
+    path: "/weather/:iata",
+    name: "ShowWeather",
+    component: ShowWeather,
   },
 ];
 

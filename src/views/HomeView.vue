@@ -21,15 +21,6 @@ export default {
     });
   },
   methods: {
-    getWeather: function (favorite) {
-      const headers = {
-        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
-      };
-      axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
-        this.currentFavoriteWeather.push(response.data);
-        console.log("current weather", response.data);
-      });
-    },
     goToCreate: function () {
       this.$router.push("/add");
     },
@@ -59,8 +50,8 @@ export default {
       <h1>Airport Name: {{ favorite.airport_name }}</h1>
       <h2>Airport IATA: {{ favorite.airport_iata }}</h2>
       <h2>Airport ICAO: {{ favorite.airport_icao }}</h2>
-      <!-- <h3 v-for="favoriteWeather in currentFavoriteWeather" :key="favoriteWeather.id"></h3> -->
-      <button @click="getWeather(favorite.airport_iata)">Get Weather</button>
+      <h2>Weather: {{ currentFavoriteWeather }}</h2>
+      <a :href="`/weather/${favorite.airport_iata}`">Get Weather</a>
       <button @click="deleteFavorite(favorite.id)">Remove this Favorite</button>
     </div>
   </div>
