@@ -28,6 +28,9 @@ export default {
           this.isActive = !this.isActive;
         });
     },
+    goHome: function () {
+      this.$router.push("/home");
+    },
   },
 };
 </script>
@@ -36,8 +39,12 @@ export default {
   <div id="add-airport">
     <h1>Add an airport to your favorites:</h1>
     <input type="text" v-model="airportParams.iata" />
+    |
     <button @click="addAirport">Add this airport</button>
     <h1 v-show="isActive === true">Added Airport: {{ addedAirport.airport_name }}</h1>
+    |
     <h1 v-show="error === true">Status:{{ status }}</h1>
+    |
+    <button @click="goHome">Check Out Your Favorites</button>
   </div>
 </template>
