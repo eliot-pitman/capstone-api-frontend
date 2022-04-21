@@ -11,6 +11,8 @@
     <router-link to="/logout">LogOut</router-link>
     |
     <router-link to="/userinfo">UserInfo</router-link>
+    |
+    <router-link to="/add">Add Airport</router-link>
   </nav>
   <router-view />
 </template>

@@ -4,6 +4,7 @@ import SignUp from "../views/SignUp.vue";
 import LogIn from "../views/LogIn.vue";
 import LogOut from "../views/LogOut.vue";
 import UserInfo from "../views/UserInfo.vue";
+import AddAirport from "../views/AddAirport.vue";
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
     path: "/userinfo",
     name: "UserInfo",
     component: UserInfo,
+  },
+  {
+    path: "/add",
+    name: "AddAirport",
+    component: AddAirport,
   },
 ];
 

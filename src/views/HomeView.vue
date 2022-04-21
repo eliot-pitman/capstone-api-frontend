@@ -13,18 +13,18 @@ export default {
       timer: "",
     };
   },
-  created: function () {
-    this.getFavorites();
-  },
+  created: function () {},
   methods: {
     getWeather: function (favorite) {
-      const headers = {
-        Authorization: "Bearer lOeb42_xPJibT35Pn9HvjCNI1GWcpsUNW9n0h4gQgw8",
-      };
-      axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
-        this.currentFavoriteWeather = response.data;
-        console.log("favorite weather front end", response.data);
-      });
+      setTimeout(() => {
+        const headers = {
+          Authorization: "Bearer " + process.env.VUE_APP_AVWX_2,
+        };
+        axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
+          this.currentFavoriteWeather.push(response.data);
+          console.log("favorite weather front end", response.data);
+        });
+      }, 30000);
     },
     getFavorites: function () {
       axios.get("/favorites").then((response) => {
@@ -33,11 +33,6 @@ export default {
       });
     },
   },
-  mounted: function () {
-    window.setInterval(() => {
-      this.getFavorites();
-    }, 300000);
-  },
 };
 </script>
 
@@ -45,12 +40,14 @@ export default {
   <div class="home">
     <h1>{{ message }}</h1>
     <h1>{{ favorites }}</h1>
+    <button @click="getFavorites">get favorites</button>
     <div v-for="favorite in favorites" :key="favorite.id">
       <h1>Airport Name: {{ favorite.airport_name }}</h1>
       <h2>Airport IATA: {{ favorite.airport_iata }}</h2>
-      <h2>Current Airport Weather {{ currentFavoriteWeather }}</h2>
-      <button @click="getWeather(favorite.airport_iata)">update weather</button>
+      <!-- <h2>Current Airport Weather: {{ getWeather(favorite.airport_iata) }}</h2> -->
+      <!-- <h3 v-for="favoriteWeather in currentFavoriteWeather" :key="favoriteWeather.id"></h3> -->
     </div>
+    <h1>LOOK: {{ currentFavoriteWeather }}</h1>
   </div>
 </template>
 
