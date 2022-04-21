@@ -4,7 +4,7 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      message: "Welcome to METAR, here are your favorite airports METAR",
+      greeting: "Welcome to METAR, here are your favorite airports METAR",
       airport: [],
       info: [],
       favorites: [],
@@ -13,7 +13,9 @@ export default {
       timer: "",
     };
   },
-  created: function () {},
+  created: function () {
+    this.getFavorites();
+  },
   methods: {
     getWeather: function (favorite) {
       setTimeout(() => {
@@ -32,22 +34,26 @@ export default {
         console.log("favorites", response.data);
       });
     },
+    goToCreate: function () {
+      this.$router.push("/add");
+    },
   },
 };
 </script>
 
 <template>
   <div class="home">
-    <h1>{{ message }}</h1>
-    <h1>{{ favorites }}</h1>
-    <button @click="getFavorites">get favorites</button>
+    <h1>{{ greeting }}</h1>
+    <h2>You have {{ favorites.length }} favorites</h2>
+    <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
+    <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
     <div v-for="favorite in favorites" :key="favorite.id">
       <h1>Airport Name: {{ favorite.airport_name }}</h1>
       <h2>Airport IATA: {{ favorite.airport_iata }}</h2>
+      <h2>Airport ICAO: {{ favorite.airport_icao }}</h2>
       <!-- <h2>Current Airport Weather: {{ getWeather(favorite.airport_iata) }}</h2> -->
       <!-- <h3 v-for="favoriteWeather in currentFavoriteWeather" :key="favoriteWeather.id"></h3> -->
     </div>
-    <h1>LOOK: {{ currentFavoriteWeather }}</h1>
   </div>
 </template>
 

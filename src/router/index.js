@@ -5,10 +5,11 @@ import LogIn from "../views/LogIn.vue";
 import LogOut from "../views/LogOut.vue";
 import UserInfo from "../views/UserInfo.vue";
 import AddAirport from "../views/AddAirport.vue";
+import LobbyMETAR from "../views/LobbyMETAR.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "home",
     component: HomeView,
   },
@@ -44,6 +45,11 @@ const routes = [
     path: "/add",
     name: "AddAirport",
     component: AddAirport,
+  },
+  {
+    path: "/",
+    name: "LobbyMETAR",
+    component: LobbyMETAR,
   },
 ];
 
