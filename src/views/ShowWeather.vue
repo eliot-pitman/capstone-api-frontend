@@ -7,7 +7,7 @@ export default {
     };
   },
   created: function () {
-    // this.getWeather(this.$route.params.iata);
+    this.getWeather(this.$route.params.iata);
   },
   methods: {
     getWeather: function (favorite) {
@@ -27,7 +27,19 @@ export default {
   <div id="show">
     <button @click="this.getWeather(this.$route.params.iata)">get weather</button>
     <div id="show-weather">
-      <h1>Weather: {{ weather }}</h1>
+      <h1>
+        Weather received at: {{ weather.meta.timestamp }}
+        <h1>METAR: {{ weather.raw }}</h1>
+        <h1>Full Weather:</h1>
+        <h2>Clouds: {{ weather.clouds }}</h2>
+        <h2>flight rules: {{ weather.flight_rules }}</h2>
+        <h2>visibility: {{ weather.visibility }}</h2>
+        <h2>
+          Wind: direction =>{{ weather.wind_direction }} gust => {{ weather.wind_gust }} speed =>
+          {{ weather.wind_speed }}
+        </h2>
+        <h2>{{ weather }}</h2>
+      </h1>
     </div>
   </div>
 </template>

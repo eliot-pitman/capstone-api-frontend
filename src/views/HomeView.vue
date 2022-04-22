@@ -36,6 +36,16 @@ export default {
           this.status = error.response.status;
         });
     },
+    getWeather: function (favorite) {
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
+        this.weather = response.data;
+        console.log("current weather", response.data);
+        return response.data;
+      });
+    },
   },
 };
 </script>
@@ -52,6 +62,7 @@ export default {
       <h2>Airport ICAO: {{ favorite.airport_icao }}</h2>
       <h2>Weather: {{ currentFavoriteWeather }}</h2>
       <a :href="`/weather/${favorite.airport_iata}`">Get Weather</a>
+      |
       <button @click="deleteFavorite(favorite.id)">Remove this Favorite</button>
     </div>
   </div>
