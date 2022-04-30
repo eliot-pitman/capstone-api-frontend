@@ -21,7 +21,8 @@ export default {
       this.favorites = response.data;
       console.log("favorites", response.data);
       this.favorites.forEach((favoriteAirportInfo) => {
-        this.getWeather(favoriteAirportInfo.airport_iata, favoriteAirportInfo);
+        this.getWeather(favoriteAirportInfo.airport_iata);
+        this.info.push(favoriteAirportInfo);
       });
     });
   },
@@ -41,21 +42,26 @@ export default {
           this.status = error.response.status;
         });
     },
-    getWeather: function (favorite, favoriteAirportInfo) {
+    getWeather: function (favorite) {
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
       axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
-        this.weatherArray.push(response.data, favoriteAirportInfo);
+        this.weatherArray.push(response.data);
         console.log("current Favorite Airport Weather", response.data);
         console.log("weatherArray", this.weatherArray);
-        // return response.data;
       });
     },
-    // getFavorite: function (iata) {
-    //   this.favorites.forEach((favorite) => (this.index = favorite.indexOf(iata)));
-    //   this.favoriteAirport.push(this.favorites[this.index]);
-    // },
+    searchByICAO: function (obj, value) {
+      // console.log("current favorite loop", obj);
+      // console.log("ICAO value loop", value);
+      for (var i = 0; i < obj.length; i++) {
+        // console.log("obj[i].airport_icoa", obj[i].airport_icao, "obj[i]", obj[i]);
+        if (obj[i].airport_icao === value) {
+          return obj[i];
+        }
+      }
+    },
   },
 };
 </script>
@@ -64,25 +70,16 @@ export default {
   <div class="home">
     <h1>{{ greeting }}</h1>
     <h2>You have {{ favorites.length }} favorites</h2>
-    <!-- <h3>{{ weatherArray }}</h3> -->
 
     <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
     <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
     <div v-for="weather in weatherArray" :key="weather.id">
+      <p>{{ searchByICAO(this.favorites, weather.station) }}</p>
       <h1>{{ weather.station }}</h1>
       <h1>{{ weather.meta }}</h1>
       <h1>{{ weather.raw }}</h1>
       <h1>{{ weather.station }}</h1>
     </div>
-    <!-- <div v-for="favorite in favorites" :key="favorite.id">
-      <h1>Airport Name: {{ favorite.airport_name }}</h1>
-      <h2>Airport IATA: {{ favorite.airport_iata }}</h2>
-      <h2>Airport ICAO: {{ favorite.airport_icao }}</h2>
-      <h2>Weather: {{ info }}</h2>
-      <a :href="`/weather/${favorite.airport_iata}`">Get Weather</a>
-      |
-      <button @click="deleteFavorite(favorite.id)">Remove this Favorite</button>
-    </div> -->
   </div>
 </template>
 
