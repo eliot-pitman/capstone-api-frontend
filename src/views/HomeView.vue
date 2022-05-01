@@ -52,13 +52,23 @@ export default {
         console.log("weatherArray", this.weatherArray);
       });
     },
-    searchByICAO: function (obj, value) {
+    searchByICAOName: function (obj, value) {
       // console.log("current favorite loop", obj);
       // console.log("ICAO value loop", value);
       for (var i = 0; i < obj.length; i++) {
         // console.log("obj[i].airport_icoa", obj[i].airport_icao, "obj[i]", obj[i]);
         if (obj[i].airport_icao === value) {
-          return obj[i];
+          return obj[i].airport_name;
+        }
+      }
+    },
+    searchByICAOID: function (obj, value) {
+      // console.log("current favorite loop", obj);
+      // console.log("ICAO value loop", value);
+      for (var i = 0; i < obj.length; i++) {
+        // console.log("obj[i].airport_icoa", obj[i].airport_icao, "obj[i]", obj[i]);
+        if (obj[i].airport_icao === value) {
+          return obj[i].id;
         }
       }
     },
@@ -73,14 +83,31 @@ export default {
 
     <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
     <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
-    <div v-for="weather in weatherArray" :key="weather.id">
-      <p>{{ searchByICAO(this.favorites, weather.station) }}</p>
-      <h1>{{ weather.station }}</h1>
-      <h1>{{ weather.meta }}</h1>
-      <h1>{{ weather.raw }}</h1>
-      <h1>{{ weather.station }}</h1>
-      <a :href="`/weather/${weather.station}`">Full Weather Data</a>
-      <button @click="deleteFavorite(searchByICAO(this.favorites, weather.station).id)">Remove Favorite</button>
+
+    <div
+      v-for="weather in weatherArray"
+      :key="weather.id"
+      class="card row-sm-4 text-white bg-dark mb-4"
+      style="max-width: 18rem"
+    >
+      <div>
+        <div class="card-header">{{ searchByICAOName(this.favorites, weather.station) }}</div>
+        <div class="card-body">
+          <h5 class="card-title">Brief Weather</h5>
+          <p class="card-text">
+            {{ weather.meta }}
+          </p>
+          <p class="card-text">
+            {{ weather.raw }}
+          </p>
+          <p class="card-text">
+            <a :href="`/weather/${weather.station}`">Full Weather Data</a>
+          </p>
+          <p class="card-text">
+            <button @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))">Remove Favorite</button>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
