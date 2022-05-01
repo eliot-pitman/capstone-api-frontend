@@ -7,7 +7,7 @@ export default {
     };
   },
   created: function () {
-    this.getWeather(this.$route.params.iata);
+    this.getWeather(this.$route.params.icao);
   },
   methods: {
     getWeather: function (favorite) {

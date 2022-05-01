@@ -4,16 +4,11 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      greeting: "Welcome to METAR, here are your favorite airports METAR",
-      airport: [],
       info: [],
       weatherArray: [],
       favorites: [],
-      favoritesWeather: "",
-      currentFavoriteWeather: [],
       status: "",
-      index: "",
-      favoriteAirport: [],
+      user: [],
     };
   },
   created: function () {
@@ -24,6 +19,10 @@ export default {
         this.getWeather(favoriteAirportInfo.airport_iata);
         this.info.push(favoriteAirportInfo);
       });
+    });
+    axios.get("/users").then((response) => {
+      this.user = response.data;
+      console.log("user", response.data);
     });
   },
   methods: {
@@ -36,6 +35,7 @@ export default {
         .delete("/favorites/" + airport_id)
         .then((response) => {
           console.log("successfully removed", response.data);
+          window.location.reload();
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
@@ -68,7 +68,7 @@ export default {
 
 <template>
   <div class="home">
-    <h1>{{ greeting }}</h1>
+    <h1>Welcome {{ user.name }}, here are your favorites</h1>
     <h2>You have {{ favorites.length }} favorites</h2>
 
     <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
@@ -79,6 +79,8 @@ export default {
       <h1>{{ weather.meta }}</h1>
       <h1>{{ weather.raw }}</h1>
       <h1>{{ weather.station }}</h1>
+      <a :href="`/weather/${weather.station}`">Full Weather Data</a>
+      <button @click="deleteFavorite(searchByICAO(this.favorites, weather.station).id)">Remove Favorite</button>
     </div>
   </div>
 </template>

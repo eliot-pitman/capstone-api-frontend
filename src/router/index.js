@@ -53,7 +53,7 @@ const routes = [
     component: LobbyMETAR,
   },
   {
-    path: "/weather/:iata",
+    path: "/weather/:icao",
     name: "ShowWeather",
     component: ShowWeather,
   },
