@@ -10,6 +10,7 @@ export default {
       status: "",
       user: [],
       homeAirport: "",
+      isHomePresent: false,
     };
   },
   created: function () {
@@ -65,6 +66,7 @@ export default {
       axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
         this.homeAirport = response.data;
         console.log("Home Airport", response.data);
+        this.isHomePresent = true;
       });
     },
     searchByICAOName: function (obj, value) {
@@ -96,9 +98,19 @@ export default {
     <div class="container px-lg-5">
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
-          <h1 class="display-5 fw-bold">Welcome, {{ user.name }}</h1>
+          <h1 class="display-5 fw-bold">Welcome, {{ user.name }}.</h1>
+          <h2 v-show="this.isHomePresent === true">Here is {{ user.home_airport }}'s Weather</h2>
+          <a v-show="this.isHomePresent === false" href="/userinfo">Add Home Airport</a>
           <p>{{ homeAirport.raw }}</p>
-          <p class="fs-4">You have {{ favorites.length }} favorited airports</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <header class="py-5">
+    <div class="container px-lg-5">
+      <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+        <div class="m-4 m-lg-5">
+          <p class="fs-4">You Have {{ favorites.length }} Favorited Airports</p>
           <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
         </div>
       </div>
