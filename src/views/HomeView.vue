@@ -81,23 +81,28 @@ export default {
     <div class="container px-lg-5">
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
-          <h1 class="display-5 fw-bold">A warm welcome!</h1>
-          <p class="fs-4">
-            Bootstrap utility classes are used to create this jumbotron since the old component has been removed from
-            the framework. Why create custom CSS when you can use utilities?
-          </p>
-          <a class="btn btn-primary btn-lg" href="#!">Call to action</a>
+          <h1 class="display-5 fw-bold">Welcome, {{ user.name }}</h1>
+          <p class="fs-4">You have {{ favorites.length }} favorites</p>
+          <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
+          <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
         </div>
       </div>
     </div>
   </header>
   <div class="home">
-    <h1>Welcome {{ user.name }}, here are your favorites</h1>
-    <h2>You have {{ favorites.length }} favorites</h2>
-
-    <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
-    <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
-
+    <div class="row gx-lg-5">
+      <div class="col-lg-6 col-xxl-4 mb-5" v-for="weather in weatherArray" :key="weather.id">
+        <div class="card bg-light border-0 h-100">
+          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
+              <i class="bi bi-collection"></i>
+            </div>
+            <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
+            <p class="mb-0">Brief Weather</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div
       v-for="weather in weatherArray"
       :key="weather.id"
