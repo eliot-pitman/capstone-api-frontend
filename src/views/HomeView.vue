@@ -9,6 +9,7 @@ export default {
       favorites: [],
       status: "",
       user: [],
+      homeAirport: "",
     };
   },
   created: function () {
@@ -20,14 +21,18 @@ export default {
         this.info.push(favoriteAirportInfo);
       });
     });
-    axios.get("/users").then((response) => {
-      this.user = response.data;
-      console.log("user", response.data);
-    });
+    this.getUser();
   },
   methods: {
     goToCreate: function () {
       this.$router.push("/add");
+    },
+    getUser: function () {
+      axios.get("/users").then((response) => {
+        this.user = response.data;
+        console.log("user", response.data);
+        this.getHomeWeather();
+      });
     },
     deleteFavorite: function (airport_id) {
       console.log(airport_id);
@@ -50,6 +55,16 @@ export default {
         this.weatherArray.push(response.data);
         console.log("current Favorite Airport Weather", response.data);
         console.log("weatherArray", this.weatherArray);
+      });
+    },
+    getHomeWeather: function () {
+      const favorite = this.user.home_airport;
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
+        this.homeAirport = response.data;
+        console.log("Home Airport", response.data);
       });
     },
     searchByICAOName: function (obj, value) {
@@ -82,9 +97,9 @@ export default {
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
           <h1 class="display-5 fw-bold">Welcome, {{ user.name }}</h1>
-          <p class="fs-4">You have {{ favorites.length }} favorites</p>
+          <p>{{ homeAirport.raw }}</p>
+          <p class="fs-4">You have {{ favorites.length }} favorited airports</p>
           <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
-          <button v-show="favorites.length > 0" @click="getFavorites">Refresh favorites</button>
         </div>
       </div>
     </div>
@@ -98,33 +113,13 @@ export default {
               <i class="bi bi-collection"></i>
             </div>
             <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
-            <p class="mb-0">Brief Weather</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      v-for="weather in weatherArray"
-      :key="weather.id"
-      class="card row-sm-4 text-white bg-dark mb-4"
-      style="max-width: 18rem"
-    >
-      <div>
-        <div class="card-header">{{ searchByICAOName(this.favorites, weather.station) }}</div>
-        <div class="card-body">
-          <h5 class="card-title">Brief Weather</h5>
-          <p class="card-text">
-            {{ weather.meta }}
-          </p>
-          <p class="card-text">
-            {{ weather.raw }}
-          </p>
-          <p class="card-text">
-            <a :href="`/weather/${weather.station}`">Full Weather Data</a>
-          </p>
-          <p class="card-text">
+            <h4 class="mb-0">Brief Weather:</h4>
+            <p class="mb-0">{{ weather.raw }}</p>
+            <p class="card-text">
+              <a :href="`/weather/${weather.station}`">Full Weather Data</a>
+            </p>
             <button @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))">Remove Favorite</button>
-          </p>
+          </div>
         </div>
       </div>
     </div>

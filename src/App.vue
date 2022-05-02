@@ -50,4 +50,8 @@ export default {
 #app {
   text-align: center;
 }
+.navbar-brand {
+  font-family: "Bungee", cursive;
+  font-size: 2cm;
+}
 </style>
