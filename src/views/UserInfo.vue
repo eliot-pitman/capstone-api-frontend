@@ -15,10 +15,6 @@ export default {
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
       console.log("favorites", response.data);
-      this.favorites.forEach((favoriteAirportInfo) => {
-        this.getWeather(favoriteAirportInfo.airport_iata);
-        this.info.push(favoriteAirportInfo);
-      });
     });
     axios.get("/users").then((response) => {
       this.user = response.data;
@@ -28,19 +24,7 @@ export default {
       this.isProfileImg = true;
     }
   },
-  methods: {
-    userUpdate: function () {
-      axios
-        .patch("/users", this.updateParams)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log("error", error.response.status, error.response.statusText);
-          this.status = error.response.status;
-        });
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -80,7 +64,7 @@ export default {
             </div>
           </h3>
           <br />
-          <a class="btn btn-primary btn-lg" href="/update">Update</a>
+          <a class="btn btn-primary btn-lg" href="/update">Change Info</a>
         </div>
       </div>
     </div>

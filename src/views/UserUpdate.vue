@@ -19,7 +19,21 @@ export default {
       this.isProfileImg = true;
     }
   },
-  methods: {},
+  methods: {
+    userUpdate: function () {
+      axios
+        .patch("/users", this.updateParams)
+        .then((response) => {
+          console.log("success", response.data);
+          this.$router.push("/userinfo");
+        })
+        .catch((error) => {
+          console.log("error", error.response.status, error.response.statusText);
+          this.status = error.response.status;
+          console.log(this.status);
+        });
+    },
+  },
 };
 </script>
 
