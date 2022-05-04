@@ -7,6 +7,7 @@ export default {
       user: [],
       updateParams: {},
       status: "",
+      isProfileImg: false,
     };
   },
   created: function () {
@@ -14,6 +15,9 @@ export default {
       this.user = response.data;
       console.log("user", response.data);
     });
+    if (this.user.avitar) {
+      this.isProfileImg = true;
+    }
   },
   methods: {
     userUpdate: function () {
@@ -32,7 +36,18 @@ export default {
 </script>
 
 <template>
-  <header class="py-5 user-info">
+  <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+    <img v-show="this.isProfileImg === true" id="profile-img" class="rounded-circle mt-5" :src="`${user.avitar}`" />
+    <img
+      v-show="this.isProfileImg === false"
+      id="profile-img"
+      class="rounded-circle mt-5"
+      src="https://www.pngitem.com/pimgs/m/200-2008473_pilot-with-hat-and-tie-pilot-silhouette-transparent.png"
+    />
+    <span class="font-weight-bold">{{ user.name }}</span>
+    <span class="text-black-50">{{ user.email }}</span>
+  </div>
+  <header class="py-2 user-info">
     <div class="container px-lg-5">
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">

@@ -19,19 +19,7 @@ export default {
       this.isProfileImg = true;
     }
   },
-  methods: {
-    userUpdate: function () {
-      axios
-        .patch("/users", this.updateParams)
-        .then((response) => {
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.log("error", error.response.status, error.response.statusText);
-          this.status = error.response.status;
-        });
-    },
-  },
+  methods: {},
 };
 </script>
 
@@ -47,45 +35,42 @@ export default {
     <span class="font-weight-bold">{{ user.name }}</span>
     <span class="text-black-50">{{ user.email }}</span>
   </div>
-  <header class="py-2 user-info">
-    <div class="container px-lg-5">
-      <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
-        <div class="m-4 m-lg-5">
-          <h1 class="display-5 fw-bold">Account Information</h1>
-          <br />
-          <h3 class="fs-4">
-            <div class="row mt-2">
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Name" v-model="updateParams.name" />
+  <form v-on:submit.prevent="userUpdate()">
+    <header class="py-2 user-info">
+      <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+          <div class="m-4 m-lg-5">
+            <h1 class="display-5 fw-bold">Account Information</h1>
+            <br />
+            <h3 class="fs-4">
+              <div class="row mt-2">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Name" />
+                </div>
+                <br />
+                <br />
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Email" />
+                </div>
+                <br />
+                <br />
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Home Airport" />
+                </div>
+                <br />
+                <br />
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Username" />
+                </div>
               </div>
-              <br />
-              <br />
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Email" v-model="updateParams.email" />
-              </div>
-              <br />
-              <br />
-              <div class="col-md-6">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Home Airport"
-                  v-model="updateParams.home_airport"
-                />
-              </div>
-              <br />
-              <br />
-              <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Username" v-model="updateParams.name" />
-              </div>
-            </div>
-          </h3>
-          <br />
-          <button @click="userUpdate()" class="btn btn-primary btn-lg">Update User</button>
+            </h3>
+            <br />
+            <input class="btn btn-primary btn-lg" type="submit" value="update" />
+          </div>
         </div>
       </div>
-    </div>
-  </header>
+    </header>
+  </form>
 </template>
 
 <style>
