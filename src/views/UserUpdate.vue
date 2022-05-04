@@ -45,22 +45,27 @@ export default {
             <h3 class="fs-4">
               <div class="row mt-2">
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Name" />
+                  <input type="text" class="form-control" placeholder="Name" v-model="updateParams.name" />
                 </div>
                 <br />
                 <br />
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Email" />
+                  <input type="text" class="form-control" placeholder="Email" v-model="updateParams.email" />
                 </div>
                 <br />
                 <br />
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Home Airport" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Home Airport"
+                    v-model="updateParams.home_airport"
+                  />
                 </div>
                 <br />
                 <br />
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Username" />
+                  <input type="text" class="form-control" placeholder="Username" v-model="updateParams.username" />
                 </div>
               </div>
             </h3>

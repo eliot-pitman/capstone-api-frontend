@@ -8,9 +8,18 @@ export default {
       updateParams: {},
       status: "",
       isProfileImg: false,
+      favorites: [],
     };
   },
   created: function () {
+    axios.get("/favorites").then((response) => {
+      this.favorites = response.data;
+      console.log("favorites", response.data);
+      this.favorites.forEach((favoriteAirportInfo) => {
+        this.getWeather(favoriteAirportInfo.airport_iata);
+        this.info.push(favoriteAirportInfo);
+      });
+    });
     axios.get("/users").then((response) => {
       this.user = response.data;
       console.log("user", response.data);
@@ -52,14 +61,26 @@ export default {
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
           <h1 class="display-5 fw-bold">Account Information</h1>
-          <img :src="`${user.avitar}`" alt="_blank" />
+          <br />
           <h3 class="fs-4">
-            <p>Name: {{ user.name }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>Home Airport: {{ user.home_airport }}</p>
-            <p>Username: {{ user.username }}</p>
+            <div class="row mt-2">
+              <div class="col-md-6">
+                <span>Home Aiport: {{ user.home_airport }}</span>
+              </div>
+              <br />
+              <br />
+              <div class="col-md-6">
+                <span>Username: {{ user.username }}</span>
+              </div>
+              <br />
+              <br />
+              <div class="col-md-6">
+                <span>Amount of Favorited Airports: {{ favorites.length }}</span>
+              </div>
+            </div>
           </h3>
-          <a class="btn btn-primary btn-lg" href="/update">Edit Account</a>
+          <br />
+          <a class="btn btn-primary btn-lg" href="/update">Update</a>
         </div>
       </div>
     </div>
