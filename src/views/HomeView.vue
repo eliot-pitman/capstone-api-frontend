@@ -100,7 +100,7 @@ export default {
         <div class="m-4 m-lg-5">
           <h1 class="display-5 fw-bold">Welcome, {{ user.name }}.</h1>
           <h2 v-show="this.isHomePresent === true">Here is {{ user.home_airport }}'s Weather</h2>
-          <a v-show="this.isHomePresent === false" href="/userinfo">Add Home Airport</a>
+          <a v-show="this.isHomePresent === false" href="/update">Add Home Airport</a>
           <p>{{ homeAirport.raw }}</p>
         </div>
       </div>

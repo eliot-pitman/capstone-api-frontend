@@ -8,6 +8,7 @@ export default {
       updateParams: {},
       status: "",
       isProfileImg: false,
+      errors: [],
     };
   },
   created: function () {
@@ -29,8 +30,7 @@ export default {
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
-          this.status = error.response.status;
-          console.log(this.status);
+          this.errors = error.response.data.errors;
         });
     },
   },
@@ -58,6 +58,9 @@ export default {
             <br />
             <h3 class="fs-4">
               <div class="row mt-2">
+                <ul>
+                  <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
+                </ul>
                 <div class="col-md-6">
                   <input type="text" class="form-control" placeholder="Name" v-model="updateParams.name" />
                 </div>
