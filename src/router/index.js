@@ -7,6 +7,7 @@ import UserInfo from "../views/UserInfo.vue";
 import AddAirport from "../views/AddAirport.vue";
 import LobbyMETAR from "../views/LobbyMETAR.vue";
 import ShowWeather from "../views/ShowWeather.vue";
+import UserUpdate from "../views/UserUpdate.vue";
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     path: "/weather/:icao",
     name: "ShowWeather",
     component: ShowWeather,
+  },
+  {
+    path: "/update",
+    name: "UserUpdate",
+    component: UserUpdate,
   },
 ];
 

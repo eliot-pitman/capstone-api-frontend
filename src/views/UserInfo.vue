@@ -44,7 +44,7 @@ export default {
             <p>Home Airport: {{ user.home_airport }}</p>
             <p>Username: {{ user.username }}</p>
           </h3>
-          <button @click="userUpdate(updateParams)">Update User</button>
+          <a class="btn btn-primary btn-lg" href="/update">Edit Account</a>
         </div>
       </div>
     </div>
