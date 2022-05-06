@@ -13,7 +13,7 @@ export default {
       axios
         .post("/users", this.newUserParams)
         .then((response) => {
-          console.log(response.data);
+          console.log("new user params", response.data);
           this.$router.push("/login");
         })
         .catch((error) => {
@@ -63,13 +63,13 @@ export default {
                 <br />
                 <br />
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Password" v-model="newUserParams.password" />
+                  <input type="password" class="form-control" placeholder="Password" v-model="newUserParams.password" />
                 </div>
                 <br />
                 <br />
                 <div class="col-md-6">
                   <input
-                    type="text"
+                    type="password"
                     class="form-control"
                     placeholder="Password Confirmation"
                     v-model="newUserParams.password_confirmation"
