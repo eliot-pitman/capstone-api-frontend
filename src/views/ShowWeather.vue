@@ -50,20 +50,34 @@ export default {
   <div class="row w-100">
     <div class="col-md-3">
       <div class="card border-info mx-sm-1 p-3">
-        <div class="card border-info shadow text-info p-3 my-card">
-          <span class="fa fa-car" aria-hidden="true"></span>
+        <div id="icon" class="text-info p-4 my-card">
+          <span class="text-info fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat" aria-hidden="true"></span>
         </div>
-        <div class="text-info text-center mt-3"><h4>Cars</h4></div>
-        <div class="text-info text-center mt-2"><h1>234</h1></div>
+        <div class="text-info text-center mt-3"><h4>Direction</h4></div>
+        <div class="text-info text-center mt-2">
+          <h1>{{ weather.wind_direction.repr }}</h1>
+        </div>
+        <div class="text-info text-center mt-3"><h4>Gust</h4></div>
+        <div class="text-info text-center mt-2">
+          <h1>{{ weather.wind_gust.repr }}</h1>
+        </div>
+        <div class="text-info text-center mt-3"><h4>Speed</h4></div>
+        <div class="text-info text-center mt-2">
+          <h1>
+            {{ weather.wind_speed.repr }}
+          </h1>
+        </div>
       </div>
     </div>
     <div class="col-md-3">
       <div class="card border-success mx-sm-1 p-3">
-        <div class="card border-success shadow text-success p-3 my-card">
-          <span class="fa fa-eye" aria-hidden="true"></span>
+        <div id="icon" class="text-info p-4 my-card">
+          <span class="text-info fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-shake" aria-hidden="true"></span>
         </div>
-        <div class="text-success text-center mt-3"><h4>Eyes</h4></div>
-        <div class="text-success text-center mt-2"><h1>9332</h1></div>
+        <div class="text-success text-center mt-3"><h4>Altimeter</h4></div>
+        <div class="text-success text-center mt-2">
+          <h1>{{ weather.altimeter }}</h1>
+        </div>
       </div>
     </div>
     <div class="col-md-3">
@@ -104,3 +118,5 @@ export default {
     </div>
   </div>
 </template>
+
+<style></style>
