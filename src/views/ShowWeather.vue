@@ -5,6 +5,7 @@ export default {
     return {
       weather: "",
       favorites: [],
+      toggle: false,
     };
   },
   created: function () {
@@ -56,16 +57,16 @@ export default {
         </div>
         <div class="text-warning text-center mt-3"><h4>Direction</h4></div>
         <div class="text-warning text-center mt-2">
-          <h1>{{ weather.wind_direction ? weather.wind_direction.repr : "Not Reporting" }}</h1>
+          <h1>{{ weather.wind_direction ? weather.wind_direction.repr : "No Value Given" }}</h1>
         </div>
         <div class="text-warning text-center mt-3"><h4>Gust</h4></div>
         <div class="text-warning text-center mt-2">
-          <h1>{{ weather.wind_gust ? weather.wind_gust.repr : "Not Reporting" }}</h1>
+          <h1>{{ weather.wind_gust ? weather.wind_gust.repr : "No Value Given" }}</h1>
         </div>
         <div class="text-warning text-center mt-3"><h4>Speed</h4></div>
         <div class="text-warning text-center mt-2">
           <h1>
-            {{ weather.wind_speed ? weather.wind_speed.repr : "Not Reporting" }}
+            {{ weather.wind_speed ? weather.wind_speed.repr + " Knots" : "No Value Given" }}
           </h1>
         </div>
       </div>
@@ -74,26 +75,23 @@ export default {
     <div class="col-md-3">
       <div class="card border-success mx-sm-1 p-3">
         <div id="icon" class="text-info p-4 my-card">
-          <span
-            class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-shake"
-            aria-hidden="true"
-          ></span>
+          <span class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin" aria-hidden="true"></span>
         </div>
         <div class="text-success text-center mt-3"><h4>Altimeter</h4></div>
         <div class="text-success text-center mt-2">
-          <h1>{{ weather.altimeter ? weather.altimeter.value : "Not Reporting" }}</h1>
+          <h1>{{ weather.altimeter ? weather.altimeter.value : "No Value Given" }}</h1>
         </div>
         <div class="text-success text-center mt-3"><h4>Temperature</h4></div>
         <div class="text-success text-center mt-2">
-          <h1>{{ weather.temperature ? weather.temperature.repr : "Not Reporting" }}</h1>
+          <h1>{{ weather.temperature ? weather.temperature.repr + " C" : "No Value Given" }}</h1>
         </div>
         <div class="text-success text-center mt-3"><h4>Density Altitude</h4></div>
         <div class="text-success text-center mt-2">
-          <h1>{{ weather.density_altitude ? weather.density_altitude : "Not Reporting" }}</h1>
+          <h1>{{ weather.density_altitude ? weather.density_altitude + " ft." : "No Value Given" }}</h1>
         </div>
         <div class="text-success text-center mt-3"><h4>Pressure Altitude</h4></div>
         <div class="text-success text-center mt-2">
-          <h1>{{ weather.pressure_altitude ? weather.pressure_altitude : "Not Reporting" }}</h1>
+          <h1>{{ weather.pressure_altitude ? weather.pressure_altitude + " ft." : "No Value Given" }}</h1>
         </div>
       </div>
     </div>
@@ -105,74 +103,47 @@ export default {
         </div>
         <div class="text-info text-center mt-3"><h4>Clouds</h4></div>
         <div class="text-info text-center mt-2">
-          <h1>{{ weather.clouds ? weather.clouds[0].repr : "Not Reporting" }}</h1>
+          <h1>{{ weather.clouds[0] ? weather.clouds[0].repr : "No Value Given" }}</h1>
         </div>
         <div class="text-info text-center mt-3"><h4>Flight Rules</h4></div>
         <div class="text-info text-center mt-2">
-          <h1>{{ weather.flight_rules ? weather.flight_rules : "Not Reporting" }}</h1>
+          <h1>{{ weather.flight_rules ? weather.flight_rules : "No Value Given" }}</h1>
         </div>
         <div class="text-info text-center mt-3"><h4>Modifier</h4></div>
         <div class="text-info text-center mt-2">
           <h1>
-            {{ weather.clouds[0].modifier ? weather.clouds[0].modifier : "Not Reporting" }}
+            {{ weather.clouds[0] ? weather.clouds[0].modifier : "No Value Given" }}
           </h1>
         </div>
       </div>
     </div>
+    <!-- precipitation -->
     <div class="col-md-3">
       <div class="card border-danger mx-sm-1 p-3">
-        <div class="card border-danger shadow text-danger p-3 my-card">
-          <span class="fa fa-heart" aria-hidden="true"></span>
+        <div id="icon" class="text-danger p-3 my-card">
+          <span class="fa-solid fa-cloud-sun-rain fa-2xl fa-shake" aria-hidden="true"></span>
         </div>
-        <div class="text-danger text-center mt-3"><h4>Hearts</h4></div>
-        <div class="text-danger text-center mt-2"><h1>346</h1></div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card border-warning mx-sm-1 p-3">
-        <div class="card border-warning shadow text-warning p-3 my-card">
-          <span class="fa fa-inbox" aria-hidden="true"></span>
+        <div class="text-danger text-center mt-3"><h4>Hourly Precipitation</h4></div>
+        <div class="text-danger text-center mt-2">
+          <h1>{{ weather.precip_hourly ? weather.precip_hourly + " in." : "No Value Given" }}</h1>
         </div>
-        <div class="text-warning text-center mt-3"><h4>Inbox</h4></div>
-        <div class="text-warning text-center mt-2"><h1>346</h1></div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card border-dark mx-sm-1 p-3">
-        <div class="card border-dark shadow text-dark p-3 my-card">
-          <span class="fa fa-inbox" aria-hidden="true"></span>
+        <div class="text-danger text-center mt-3"><h4>Snow Depth</h4></div>
+        <div class="text-danger text-center mt-2">
+          <h1>{{ weather.snow_depth ? weather.snow_depth + " in." : "No Value Given" }}</h1>
         </div>
-        <div class="text-dark text-center mt-3"><h4>Inbox</h4></div>
-        <div class="text-dark text-center mt-2"><h1>346</h1></div>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <div class="card border-secondary mx-sm-1 p-3">
-        <div class="card border-secondary shadow text-dark p-3 my-card">
-          <span class="fa fa-inbox" aria-hidden="true"></span>
+        <div class="text-danger text-center mt-3"><h4>Runway Visibility</h4></div>
+        <div class="text-danger text-center mt-2">
+          <h1>{{ weather.runway_visibility ? weather.runway_visibility : "No Value Given" }}</h1>
         </div>
-        <div class="text-secondary text-center mt-3"><h4>Inbox</h4></div>
-        <div class="text-secondary text-center mt-2"><h1>346</h1></div>
       </div>
     </div>
   </div>
 
-  <div id="show">
-    <div id="show-weather">
-      <h1>
-        Weather received at: {{ weather.meta.timestamp }}
-        <h1>METAR: {{ weather.raw }}</h1>
-        <h1>Full Weather:</h1>
-        <h2>Clouds: {{ weather.clouds }}</h2>
-        <h2>flight rules: {{ weather.flight_rules }}</h2>
-        <h2>visibility: {{ weather.visibility }}</h2>
-        <h2>
-          Wind: direction =>{{ weather.wind_direction }} gust => {{ weather.wind_gust }} speed =>
-          {{ weather.wind_speed }}
-        </h2>
-        <h2>{{ weather }}</h2>
-      </h1>
-    </div>
+  <div id="show-weather">
+    <button class="btn btn-light btn-rounded mt-3" @click="toggle = !toggle">See full report...</button>
+    <h1 v-show="toggle === true">
+      <h2>{{ weather }}</h2>
+    </h1>
   </div>
 </template>
 
