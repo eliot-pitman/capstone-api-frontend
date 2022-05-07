@@ -55,16 +55,16 @@ export default {
         </div>
         <div class="text-info text-center mt-3"><h4>Direction</h4></div>
         <div class="text-info text-center mt-2">
-          <h1>{{ weather.wind_direction.repr }}</h1>
+          <h1>{{ weather.wind_direction ? weather.wind_direction.repr : "" }}</h1>
         </div>
         <div class="text-info text-center mt-3"><h4>Gust</h4></div>
         <div class="text-info text-center mt-2">
-          <h1>{{ weather.wind_gust.repr }}</h1>
+          <h1>{{ weather.wind_gust ? weather.wind_gust : "" }}</h1>
         </div>
         <div class="text-info text-center mt-3"><h4>Speed</h4></div>
         <div class="text-info text-center mt-2">
           <h1>
-            {{ weather.wind_speed.repr }}
+            {{ weather.wind_speed ? weather.wind_speed.repr : "" }}
           </h1>
         </div>
       </div>
