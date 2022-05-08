@@ -41,13 +41,31 @@ export default {
 
 <template>
   <div>
-    <div>
-      <h1>Search Airport by IATA Code</h1>
-      <a href="https://www.leonardsguide.com/us-airport-codes.shtml" target="_blank">Find IATA code</a>
-    </div>
-    <div>
-      <input type="text" v-model="airportCode" />
-      <button @click="getWeather(airportCode)">Search Airports</button>
+    <div class="container mt-5">
+      <div class="p-3 bg-light rounded-3 text-center">
+        <div class="m-4 m-lg-5">
+          <div id="search">
+            <div>
+              <h1 class="display-5 fw-bold">Search Airport by IATA Code</h1>
+              <a href="https://www.leonardsguide.com/us-airport-codes.shtml" target="_blank">Find IATA code</a>
+            </div>
+            <div class="input">
+              <input
+                type="text"
+                class="col-xs-2 mt-3"
+                aria-label="Default"
+                aria-describedby="inputGroup-sizing-default"
+                v-model="airportCode"
+              />
+            </div>
+            <li class="content__item">
+              <button class="button button--anthe mt-3" @click="getWeather(airportCode)">
+                <span>Search Airports</span>
+              </button>
+            </li>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div v-if="search === true">
@@ -55,7 +73,7 @@ export default {
         <div class="container px-lg-5">
           <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
             <div class="m-4 m-lg-5">
-              <h1 class="display-5 fw-bold">Full Weather for</h1>
+              <h1 class="display-5 fw-bold">Full Weather for {{ airportInfo.name }}</h1>
             </div>
           </div>
         </div>
