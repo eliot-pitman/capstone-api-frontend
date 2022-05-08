@@ -1,5 +1,4 @@
 <script>
-import axios from "axios";
 export default {
   data: function () {
     return {
@@ -9,28 +8,6 @@ export default {
   methods: {
     goShow: function () {
       this.$router.push("/show");
-    },
-
-    getWeather: function (airport) {
-      const headers = {
-        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
-      };
-      axios
-        .get(`https://avwx.rest/api/metar/${airport}`, { headers })
-        .then((response) => {
-          this.weather = response.data;
-          console.log("current weather", response.data);
-        })
-        .then(this.airportInfoGet(this.airportCode));
-    },
-    airportInfoGet: function (code) {
-      const headers = {
-        "X-RapidAPI-Key": process.env.VUE_APP_AIRPORT_INFO,
-      };
-      axios.get(`https://airport-info.p.rapidapi.com/airport?iata=${code}`, { headers }).then((response) => {
-        this.airportInfo = response.data;
-        console.log("airport info", response.data);
-      });
     },
   },
 };
@@ -44,9 +21,18 @@ export default {
           <h1 class="display-5 fw-bold">Welcome, to METAR</h1>
           <h2>All your Favorite Airports in One Place</h2>
           <p>Easily make an account to save and search current weather data or...</p>
-          <button @click="goShow">Search Without Account</button>
+          <br />
+          <li class="content__item">
+            <button class="button button--calypso" @click="goShow"><span>Search Without Account</span></button>
+          </li>
         </div>
       </div>
     </div>
   </header>
 </template>
+
+<style>
+span {
+  font-family: sans-serif;
+}
+</style>
