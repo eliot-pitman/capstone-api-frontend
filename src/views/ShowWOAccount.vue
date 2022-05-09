@@ -9,16 +9,21 @@ export default {
       toggle: false,
       airportCode: "",
       search: false,
+      input: "",
+      airportFeed: "",
+      currentAirport: "",
     };
   },
   created: function () {},
   methods: {
-    getWeather: function (airport) {
+    getWeather: function (IATA, airportInfo) {
+      this.currentAirport = airportInfo;
+      console.log("current airport", this.currentAirport);
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
       axios
-        .get(`https://avwx.rest/api/metar/${airport}`, { headers })
+        .get(`https://avwx.rest/api/metar/${IATA}`, { headers })
         .then((response) => {
           this.weather = response.data;
           console.log("current weather", response.data);
@@ -56,12 +61,26 @@ export default {
 
 <template>
   <div>
+    <div id="input-container">
+      <input type="text" placeholder="Search by name, city, or IATA code" v-model="input" />
+    </div>
+    <div v-if="search === false">
+      <div class="display" v-for="airport in airportFeed" v-bind:key="airport.id">
+        <span class="individual-airport">{{ airport.name }}</span>
+        <li class="content__item">
+          <button class="button button--anthe mt-3" @click="getWeather(airport.iata, airport)">
+            <span>View Weather</span>
+          </button>
+        </li>
+      </div>
+    </div>
+    <button @click="getAirportSearch">Active search test</button>
     <div class="container mt-5">
       <div class="p-3 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
           <div id="search">
             <div>
-              <h1 class="display-5 fw-bold">Search Airport by IATA Code</h1>
+              <h1 class="display-5 fw-bold">Search Airports</h1>
               <a href="https://www.leonardsguide.com/us-airport-codes.shtml" target="_blank">Find IATA code</a>
             </div>
             <div class="input">
@@ -88,7 +107,7 @@ export default {
         <div class="container px-lg-5">
           <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
             <div class="m-4 m-lg-5">
-              <h1 class="display-5 fw-bold">Full Weather for {{ airportInfo.name }}</h1>
+              <h1 class="display-5 fw-bold">Full Weather for {{ currentAirport.name }}</h1>
             </div>
           </div>
         </div>
