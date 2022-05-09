@@ -35,6 +35,21 @@ export default {
         console.log("airport info", response.data);
       });
     },
+    getAirportSearch: function () {
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/search/station?text=${this.input}&n=3&airport=true&reporting=true&format=json`, {
+          headers,
+        })
+        .then((response) => {
+          this.airportFeed = response.data;
+          console.log("active search", response.data);
+          console.log("search", this.airportFeed);
+        })
+        .catch((error) => console.log(error));
+    },
   },
 };
 </script>
