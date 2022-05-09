@@ -11,6 +11,8 @@ export default {
       error: false,
       favorites: [],
       isPresent: false,
+      input: "",
+      displayResults: "",
     };
   },
   created: function () {
@@ -57,12 +59,28 @@ export default {
     goHome: function () {
       this.$router.push("/home");
     },
+    getAirportSearch: function () {
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/search/station?text=${this.input}&n=3&airport=true&reporting=true&format=json`, {
+          headers,
+        })
+        .then((response) => {
+          this.displayResults = response.data;
+          console.log("active search", response.data);
+          console.log("search", this.displayResults);
+        });
+    },
   },
 };
 </script>
 
 <template>
   <div id="add-airport">
+    <input type="text" v-model="input" />
+    <button @click="getAirportSearch">Active search test</button>
     <h1>Add an airport to your favorites:</h1>
     <input type="text" v-model="airportParams.iata" />
     |
