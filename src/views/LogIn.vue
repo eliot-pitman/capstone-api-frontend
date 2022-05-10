@@ -43,12 +43,15 @@ export default {
                     <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                   </ul>
                   <div class="col-md-6 mt-3">
-                    <label>Email:</label>
-                    <input class="form-control" type="email" v-model="newSessionParams.email" />
+                    <input class="form-control" placeholder="Email" type="email" v-model="newSessionParams.email" />
                   </div>
                   <div class="col-md-6 mt-3">
-                    <label>Password:</label>
-                    <input class="form-control" type="password" v-model="newSessionParams.password" />
+                    <input
+                      class="form-control"
+                      placeholder="Password"
+                      type="password"
+                      v-model="newSessionParams.password"
+                    />
                   </div>
                 </div>
               </h3>

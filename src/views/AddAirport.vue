@@ -13,6 +13,9 @@ export default {
       isPresent: false,
       airportNameSearchString: "",
       airportFeed: "",
+      search: false,
+      input: "",
+      isError: false,
     };
   },
   created: function () {
@@ -35,31 +38,35 @@ export default {
       });
       console.log("search favorites ispresent", this.isPresent);
       if (this.isPresent === false) {
+        this.isPresent = false;
         this.addAirport(airportIATA);
       }
     },
     addAirport: function (IATA) {
       console.log("ispresent", this.isPresent, IATA);
+
       axios
         .post("/favorites", { iata: IATA })
         .then((response) => {
           console.log("success", response.data, IATA);
           this.addedAirport = response.data;
-          this.isActive = !this.isActive;
+          this.isActive = true;
           this.error = false;
-          this.isPresent = false;
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
-          this.status = error.response.status;
+          this.status = "This Airport is Not Available";
           this.error = true;
-          this.isActive = !this.isActive;
+          this.isActive = false;
+          this.isError = true;
         });
     },
     goHome: function () {
       this.$router.push("/home");
     },
     getAirportSearch: function () {
+      this.search = true;
+      this.isError = false;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -72,29 +79,66 @@ export default {
           console.log("active search", response.data);
           console.log("search", this.airportFeed);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log("error", error.response.status, error.response.statusText);
+          this.status = "Airport Not Found";
+          this.error = true;
+          this.isError = true;
+          this.search = false;
+        });
     },
   },
 };
 </script>
 
 <template>
-  <div id="add-airport">
-    <div id="input-container">
-      <input type="text" placeholder="Search by name, city, or IATA code" v-model="input" />
+  <!-- alerts  -->
+  <div v-if="this.search === true" class="alert alert-info mt-5">Select Airport Below</div>
+  <div v-if="this.isError === true" class="alert alert-warning mt-5">{{ this.status }}</div>
+  <!-- search bar -->
+  <div class="container mt-5">
+    <div class="p-3 bg-light rounded-3 text-center">
+      <div class="m-4 m-lg-5">
+        <div id="search">
+          <div>
+            <h1 class="display-5 fw-bold">Search Airports by Name, City, IATA, or ICAO</h1>
+          </div>
+          <div><input class="mt-3" type="text" placeholder="Add Favorite" v-model="input" /></div>
+          <li class="content__item">
+            <button class="button button--anthe mt-3" @click="getAirportSearch">
+              <span>Search Airports</span>
+            </button>
+          </li>
+        </div>
+      </div>
     </div>
-    <div class="display" v-for="airport in airportFeed" v-bind:key="airport.id">
-      <span class="individual-airport">{{ airport.name }}</span>
-      <button @click="searchFavorites(airport.iata)">Add this airport</button>
-    </div>
-    <button @click="getAirportSearch">Active search test</button>
-
-    <h1 v-show="isActive === true">Added Airport: {{ addedAirport.airport_name }}</h1>
-    |
-    <h1 v-show="error === true">{{ status }}</h1>
-    |
-    <h1 v-show="this.isPresent === true">{{ status }}</h1>
-    |
-    <button @click="goHome()">Check Out Your Favorites</button>
   </div>
+  <!-- success banner -->
+  <div v-if="isActive === true" class="alert alert-success" role="alert">
+    Added Airport: {{ addedAirport.airport_name }}
+  </div>
+  <!-- already favorited banner -->
+  <div v-if="isPresent === true" class="alert alert-warning" role="alert">
+    {{ status }}
+  </div>
+  <!-- error banner -->
+  <div v-if="error === true" class="alert alert-warning" role="alert">
+    {{ status }}
+  </div>
+  <!-- aiport options -->
+  <div v-if="search === true">
+    <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
+      <h1>
+        <span class="individual-airport">{{ airport.name }}</span>
+      </h1>
+      <li class="content__item">
+        <button class="button button--anthe mt-3" @click="searchFavorites(airport.iata)">
+          <span>Add Airport</span>
+        </button>
+      </li>
+    </div>
+  </div>
+  <li class="content__item mt-3">
+    <button @click="goHome()" class="button button--pandora"><span>Back to Favorites</span></button>
+  </li>
 </template>

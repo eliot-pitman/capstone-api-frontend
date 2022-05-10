@@ -110,10 +110,11 @@ export default {
     </div>
   </header>
   <header class="py-5">
-    <div class="container px-lg-5">
-      <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+    <div class="container px-md-2">
+      <div class="p-4 p-md-2 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
-          <p class="fs-4">You Have {{ favorites.length }} Favorited Airports</p>
+          <h2 v-show="favorites.length > 1" class="fs-4">You Have {{ favorites.length }} Favorited Airports</h2>
+          <h2 v-show="favorites.length === 1" class="fs-4">You Have 1 Favorited Airport</h2>
           <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
         </div>
       </div>
@@ -128,8 +129,22 @@ export default {
               <i class="fa-solid fa-plane-departure"></i>
             </div>
             <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
-            <h4 class="mb-0">Brief Weather:</h4>
-            <p>{{ weather.raw }}</p>
+            <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
+            <p class="mt-3">{{ weather.flight_rules }}</p>
+            <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
+            <p class="mt-3">{{ weather.altimeter.value }}</p>
+            <li class="text-warning fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat"></li>
+            <p class="mt-3">
+              Direction:
+              <span>{{ weather.wind_direction.value }}</span>
+              Knots
+            </p>
+            <p class="mt-3">
+              Speed:
+              <span>{{ weather.wind_speed.value }}</span>
+            </p>
+            <li class="text-dark fa-solid fa-temperature-half fa-2xl animation-duration: 3s; fa-bounce mt-2"></li>
+            <p class="mt-3">Temperature: {{ weather.temperature.value }} Celcius</p>
 
             <button @click="goShow(weather.station)" class="button button--telesto">
               <span>Full Weather</span>
@@ -148,4 +163,9 @@ export default {
   </div>
 </template>
 
-<style></style>
+<style>
+span {
+  font-weight: bold;
+  font-size: 20px;
+}
+</style>
