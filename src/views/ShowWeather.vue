@@ -34,27 +34,15 @@ export default {
       }
     },
   },
-  mounted: function () {
-    document.onreadystatechange = () => {
-      if (document.readyState == "complete") {
-        this.isLoaded = true;
-      }
-    };
-  },
 };
 </script>
 
 <template>
-  <!-- <div v-if="isLoaded === true" class="spinner-grow" role="status">
-    <span class="sr-only">Loading...</span>
-  </div> -->
   <header class="py-5">
     <div class="container px-lg-5">
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
-          <h1 class="display-5 fw-bold">
-            Full Weather for {{ searchByICAOName(this.favorites, this.weather.station) }}
-          </h1>
+          <h1 class="display-5 fw-bold">Full Weather for {{ this.$route.params.icao }}</h1>
         </div>
       </div>
     </div>

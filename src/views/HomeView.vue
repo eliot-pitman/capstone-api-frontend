@@ -104,7 +104,37 @@ export default {
           <h1 class="display-5 fw-bold">Welcome, {{ user.name }}.</h1>
           <h2 v-show="this.isHomePresent === true">Here is {{ user.home_airport }}'s Weather</h2>
           <a v-show="this.isHomePresent === false" href="/update">Add Home Airport</a>
-          <p>{{ homeAirport.raw }}</p>
+
+          <div id="home-card-view">
+            <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
+            <p class="mt-3">
+              <span>{{ homeAirport.flight_rules }}</span>
+            </p>
+            <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
+            <p class="mt-3">
+              <span>{{ homeAirport.altimeter.value }}</span>
+            </p>
+            <li class="text-warning fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat"></li>
+            <p class="mt-3">
+              Direction:
+              <span>{{ homeAirport.wind_direction.repr }}</span>
+              Knots
+            </p>
+            <p class="mt-3">
+              Speed:
+              <span>{{ homeAirport.wind_speed.value }}</span>
+            </p>
+            <li class="text-dark fa-solid fa-temperature-half fa-2xl animation-duration: 3s; fa-bounce mt-2"></li>
+            <p class="mt-3">
+              Temperature:
+              <span>{{ homeAirport.temperature.value }}</span>
+              Celcius
+            </p>
+
+            <button @click="goShow(homeAirport.station)" class="button button--telesto">
+              <span>Full Weather</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -129,33 +159,43 @@ export default {
               <i class="fa-solid fa-plane-departure"></i>
             </div>
             <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
-            <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
-            <p class="mt-3">{{ weather.flight_rules }}</p>
-            <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
-            <p class="mt-3">{{ weather.altimeter.value }}</p>
-            <li class="text-warning fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat"></li>
-            <p class="mt-3">
-              Direction:
-              <span>{{ weather.wind_direction.value }}</span>
-              Knots
-            </p>
-            <p class="mt-3">
-              Speed:
-              <span>{{ weather.wind_speed.value }}</span>
-            </p>
-            <li class="text-dark fa-solid fa-temperature-half fa-2xl animation-duration: 3s; fa-bounce mt-2"></li>
-            <p class="mt-3">Temperature: {{ weather.temperature.value }} Celcius</p>
+            <div id="home-card-view">
+              <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
+              <p class="mt-3">
+                <span>{{ weather.flight_rules }}</span>
+              </p>
+              <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
+              <p class="mt-3">
+                <span>{{ weather.altimeter.value }}</span>
+              </p>
+              <li class="text-warning fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat"></li>
+              <p class="mt-3">
+                Direction:
+                <span>{{ weather.wind_direction.repr }}</span>
+                Knots
+              </p>
+              <p class="mt-3">
+                Speed:
+                <span>{{ weather.wind_speed.value }}</span>
+              </p>
+              <li class="text-dark fa-solid fa-temperature-half fa-2xl animation-duration: 3s; fa-bounce mt-2"></li>
+              <p class="mt-3">
+                Temperature:
+                <span>{{ weather.temperature.value }}</span>
+                Celcius
+              </p>
 
-            <button @click="goShow(weather.station)" class="button button--telesto">
-              <span>Full Weather</span>
-            </button>
+              <button @click="goShow(weather.station)" class="button button--telesto">
+                <span>Full Weather</span>
+              </button>
 
-            <button
-              @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))"
-              class="button button--rhea"
-            >
-              <span>Remove</span>
-            </button>
+              <button
+                @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))"
+                class="button button--rhea"
+              >
+                <span>Remove</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
