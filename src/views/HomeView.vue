@@ -106,14 +106,18 @@ export default {
           <a v-show="this.isHomePresent === false" href="/update">Add Home Airport</a>
 
           <div id="home-card-view">
-            <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
-            <p class="mt-3">
-              <span>{{ homeAirport.flight_rules }}</span>
-            </p>
-            <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
-            <p class="mt-3">
-              <span>{{ homeAirport.altimeter.value }}</span>
-            </p>
+            <div id="card">
+              <li class="text-dark fa-solid fa-binoculars fa-2xl animation-duration: 3s; fa-fade mt-2"></li>
+              <p class="mt-3">
+                <span>{{ homeAirport.flight_rules }}</span>
+              </p>
+            </div>
+            <div id="card">
+              <li class="text-success fa-solid fa-gauge fa-2xl animation-duration: 3s; fa-spin mt-2"></li>
+              <p class="mt-3">
+                <span>{{ homeAirport.altimeter.value }}</span>
+              </p>
+            </div>
             <li class="text-warning fa-solid fa-wind fa-2xl animation-duration: 3s; fa-beat"></li>
             <p class="mt-3">
               Direction:
@@ -184,18 +188,18 @@ export default {
                 <span>{{ weather.temperature.value }}</span>
                 Celcius
               </p>
-
-              <button @click="goShow(weather.station)" class="button button--telesto">
-                <span>Full Weather</span>
-              </button>
-
-              <button
-                @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))"
-                class="button button--rhea"
-              >
-                <span>Remove</span>
-              </button>
             </div>
+
+            <button @click="goShow(weather.station)" class="button button--telesto">
+              <span>Full Weather</span>
+            </button>
+
+            <button
+              @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))"
+              class="button button--rhea"
+            >
+              <span>Remove</span>
+            </button>
           </div>
         </div>
       </div>
