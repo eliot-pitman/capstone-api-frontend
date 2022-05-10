@@ -41,6 +41,7 @@ export default {
       });
     },
     getAirportSearch: function () {
+      this.search = false;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -61,44 +62,39 @@ export default {
 
 <template>
   <div>
-    <div id="input-container">
-      <input type="text" placeholder="Search by name, city, or IATA code" v-model="input" />
-    </div>
-    <div v-if="search === false">
-      <div class="display" v-for="airport in airportFeed" v-bind:key="airport.id">
-        <span class="individual-airport">{{ airport.name }}</span>
-        <li class="content__item">
-          <button class="button button--anthe mt-3" @click="getWeather(airport.iata, airport)">
-            <span>View Weather</span>
-          </button>
-        </li>
-      </div>
-    </div>
-    <button @click="getAirportSearch">Active search test</button>
     <div class="container mt-5">
       <div class="p-3 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
           <div id="search">
             <div>
-              <h1 class="display-5 fw-bold">Search Airports</h1>
-              <a href="https://www.leonardsguide.com/us-airport-codes.shtml" target="_blank">Find IATA code</a>
+              <h1 class="display-5 fw-bold">Search Airports by Name, City, IATA, or ICAO</h1>
             </div>
-            <div class="input">
-              <input
-                type="text"
-                class="col-xs-2 mt-3"
-                aria-label="Default"
-                aria-describedby="inputGroup-sizing-default"
-                v-model="airportCode"
-              />
-            </div>
+            <div><input class="mt-3" type="text" placeholder="Search for Airport" v-model="input" /></div>
             <li class="content__item">
-              <button class="button button--anthe mt-3" @click="getWeather(airportCode)">
+              <button class="button button--anthe mt-3" @click="getAirportSearch">
                 <span>Search Airports</span>
               </button>
             </li>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div v-if="search === true" class="alert alert-info mt-5">
+      <strong>Info Below</strong>
+      Scroll down to get the full weather report.
+    </div>
+
+    <div v-if="search === false">
+      <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
+        <h1>
+          <span class="individual-airport">{{ airport.name }}</span>
+        </h1>
+        <li class="content__item">
+          <button class="button button--anthe mt-3" @click="getWeather(airport.iata, airport)">
+            <span>View Weather</span>
+          </button>
+        </li>
       </div>
     </div>
 
@@ -211,8 +207,9 @@ export default {
           </div>
         </div>
       </div>
+      <div v-if="toggle === true" class="alert alert-info">Unparsed data below</div>
       <div id="show-weather">
-        <button class="btn btn-light btn-rounded mt-3" @click="toggle = !toggle">See full report...</button>
+        <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
         <h1 v-show="toggle === true">
           <h2>{{ weather }}</h2>
         </h1>
