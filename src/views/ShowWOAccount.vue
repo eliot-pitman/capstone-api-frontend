@@ -120,16 +120,16 @@ export default {
             </div>
             <div class="text-warning text-center mt-3"><h4>Direction</h4></div>
             <div class="text-warning text-center mt-2">
-              <h1>{{ weather.wind_direction ? weather.wind_direction.repr : "Not Reporting" }}</h1>
+              <h1>{{ weather.wind_direction ? weather.wind_direction.repr : "No Value Given" }}</h1>
             </div>
             <div class="text-warning text-center mt-3"><h4>Gust</h4></div>
             <div class="text-warning text-center mt-2">
-              <h1>{{ weather.wind_gust ? weather.wind_gust.repr : "Not Reporting" }}</h1>
+              <h1>{{ weather.wind_gust ? weather.wind_gust.repr : "No Value Given" }}</h1>
             </div>
             <div class="text-warning text-center mt-3"><h4>Speed</h4></div>
             <div class="text-warning text-center mt-2">
               <h1>
-                {{ weather.wind_speed ? weather.wind_speed.repr + " Knots" : "Not Reporting" }}
+                {{ weather.wind_speed ? weather.wind_speed.repr + " Knots" : "No Value Given" }}
               </h1>
             </div>
           </div>
@@ -145,19 +145,19 @@ export default {
             </div>
             <div class="text-success text-center mt-3"><h4>Altimeter</h4></div>
             <div class="text-success text-center mt-2">
-              <h1>{{ weather.altimeter ? weather.altimeter.value : "Not Reporting" }}</h1>
+              <h1>{{ weather.altimeter ? weather.altimeter.value : "No Value Given" }}</h1>
             </div>
             <div class="text-success text-center mt-3"><h4>Temperature</h4></div>
             <div class="text-success text-center mt-2">
-              <h1>{{ weather.temperature ? weather.temperature.repr + " C" : "Not Reporting" }}</h1>
+              <h1>{{ weather.temperature ? weather.temperature.repr + " C" : "No Temperature Given" }}</h1>
             </div>
             <div class="text-success text-center mt-3"><h4>Density Altitude</h4></div>
             <div class="text-success text-center mt-2">
-              <h1>{{ weather.density_altitude ? weather.density_altitude + " ft." : "Not Reporting" }}</h1>
+              <h1>{{ weather.density_altitude ? weather.density_altitude + " ft." : "No Density Alt. Given" }}</h1>
             </div>
             <div class="text-success text-center mt-3"><h4>Pressure Altitude</h4></div>
             <div class="text-success text-center mt-2">
-              <h1>{{ weather.pressure_altitude ? weather.pressure_altitude + " ft." : "Not Reporting" }}</h1>
+              <h1>{{ weather.pressure_altitude ? weather.pressure_altitude + " ft." : "No Pressure Alt. Given" }}</h1>
             </div>
           </div>
         </div>
@@ -172,16 +172,16 @@ export default {
             </div>
             <div class="text-info text-center mt-3"><h4>Clouds</h4></div>
             <div class="text-info text-center mt-2">
-              <h1>{{ weather.clouds[0] ? weather.clouds[0].repr : "Not Reporting" }}</h1>
+              <h1>{{ weather.clouds[0] ? weather.clouds[0].repr : "No Cloud Report Given" }}</h1>
             </div>
             <div class="text-info text-center mt-3"><h4>Flight Rules</h4></div>
             <div class="text-info text-center mt-2">
-              <h1>{{ weather.flight_rules ? weather.flight_rules : "Not Reporting" }}</h1>
+              <h1>{{ weather.flight_rules ? weather.flight_rules : "No Flight Rules Given" }}</h1>
             </div>
             <div class="text-info text-center mt-3"><h4>Modifier</h4></div>
             <div class="text-info text-center mt-2">
               <h1>
-                {{ weather.clouds[0] ? weather.clouds[0].modifier : "Not Reporting" }}
+                {{ weather.clouds[0] ? weather.clouds[0].modifier : "No Modifiers Given" }}
               </h1>
             </div>
           </div>
@@ -194,20 +194,22 @@ export default {
             </div>
             <div class="text-danger text-center mt-3"><h4>Hourly Precipitation</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>{{ weather.precip_hourly ? weather.precip_hourly + " in." : "Not Reporting" }}</h1>
+              <h1>{{ weather.precip_hourly ? weather.precip_hourly + " in." : "No Precipitation Reported" }}</h1>
             </div>
             <div class="text-danger text-center mt-3"><h4>Snow Depth</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>{{ weather.snow_depth ? weather.snow_depth + " in." : "Not Reporting" }}</h1>
+              <h1>{{ weather.snow_depth ? weather.snow_depth + " in." : "No Snow Reported" }}</h1>
             </div>
             <div class="text-danger text-center mt-3"><h4>Runway Visibility</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>{{ weather.runway_visibility ? weather.runway_visibility : "Not Reporting" }}</h1>
+              <h1>
+                {{ weather.runway_visibility[0] ? weather.runway_visibility[0] : "No Runway Visibility Reported" }}
+              </h1>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="toggle === true" class="alert alert-info">Unparsed data below</div>
+      <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
       <div id="show-weather">
         <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
         <h1 v-show="toggle === true">

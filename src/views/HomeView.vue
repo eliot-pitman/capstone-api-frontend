@@ -122,7 +122,7 @@ export default {
         <div class="card bg-light border-0 h-100">
           <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4">
-              <i class="bi bi-collection"></i>
+              <i class="fa-solid fa-plane-departure"></i>
             </div>
             <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
             <h4 class="mb-0">Brief Weather:</h4>
