@@ -4,8 +4,11 @@ import axios from "axios";
 export default {
   data: function () {
     return {
-      newUserParams: {},
+      newUserParams: { home_airport: "" },
       errors: [],
+      search: false,
+      airportFeed: "",
+      input: "",
     };
   },
   methods: {
@@ -19,6 +22,33 @@ export default {
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
+    },
+    getAirportSearch: function () {
+      this.search = true;
+      this.isError = false;
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/search/station?text=${this.input}&n=3&airport=true&reporting=true&format=json`, {
+          headers,
+        })
+        .then((response) => {
+          this.airportFeed = response.data;
+          console.log("active search", response.data);
+          console.log("search", this.airportFeed);
+        })
+        .catch((error) => {
+          console.log("error", error.response.status, error.response.statusText);
+          this.status = "Airport Not Found";
+          this.error = true;
+          this.isError = true;
+          this.search = false;
+        });
+    },
+    createHome: function (airport) {
+      this.newUserParams.home_airport = airport;
+      console.log("added home", airport);
     },
   },
 };
@@ -69,14 +99,6 @@ export default {
                     v-model="newUserParams.avitar"
                   />
                 </div>
-                <div class="col-md-6 mt-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Home Airport"
-                    v-model="newUserParams.home_airport"
-                  />
-                </div>
               </div>
             </h3>
             <br />
@@ -88,4 +110,20 @@ export default {
       </div>
     </header>
   </form>
+  <div class="col-md-6 mt-3">
+    <input type="text" class="form-control" placeholder="Home Airport" v-model="input" />
+    <button @click="getAirportSearch()">search</button>
+  </div>
+  <div v-if="search === true">
+    <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
+      <h1>
+        <span class="individual-airport">{{ airport.name }}</span>
+      </h1>
+      <li class="content__item">
+        <button class="button button--anthe mt-3" @click="createHome(airport.iata)">
+          <span>Add as Home Airport</span>
+        </button>
+      </li>
+    </div>
+  </div>
 </template>
