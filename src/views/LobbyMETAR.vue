@@ -9,6 +9,9 @@ export default {
     goShow: function () {
       this.$router.push("/show");
     },
+    goSignUp: function () {
+      this.$router.push("/signup");
+    },
   },
 };
 </script>
@@ -20,8 +23,12 @@ export default {
         <div class="m-4 m-lg-5">
           <h1 class="display-5 fw-bold">Welcome, to METAR</h1>
           <h2>All your Favorite Airports in One Place</h2>
-          <p>Easily make an account to save and search current weather data or...</p>
+          <p>Easily make an account to save and search current weather data</p>
           <br />
+          <li class="content__item">
+            <button class="button button--calypso" @click="goSignUp"><span>Create Account</span></button>
+          </li>
+          or...
           <li class="content__item">
             <button class="button button--calypso" @click="goShow"><span>Search Without Account</span></button>
           </li>

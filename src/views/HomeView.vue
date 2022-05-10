@@ -89,6 +89,9 @@ export default {
         }
       }
     },
+    goShow: function (IATA) {
+      this.$router.push("/weather/" + IATA);
+    },
   },
 };
 </script>
@@ -126,11 +129,18 @@ export default {
             </div>
             <h2 class="fs-4 fw-bold">{{ searchByICAOName(this.favorites, weather.station) }}</h2>
             <h4 class="mb-0">Brief Weather:</h4>
-            <p class="mb-0">{{ weather.raw }}</p>
-            <p class="card-text">
-              <a :href="`/weather/${weather.station}`">Full Weather Data</a>
-            </p>
-            <button @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))">Remove Favorite</button>
+            <p>{{ weather.raw }}</p>
+
+            <button @click="goShow(weather.station)" class="button button--telesto">
+              <span>Full Weather</span>
+            </button>
+
+            <button
+              @click="deleteFavorite(searchByICAOID(this.favorites, weather.station))"
+              class="button button--rhea"
+            >
+              <span>Remove</span>
+            </button>
           </div>
         </div>
       </div>

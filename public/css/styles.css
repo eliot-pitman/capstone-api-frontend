@@ -12351,3 +12351,124 @@ textarea.form-control-lg {
 	transition-delay: 0.4s;
 	transition-timing-function: linear;
 }
+
+@keyframes slotMachine {
+	50% {
+		transform: translate3d(0,100%,0);
+		opacity: 0;
+	}
+	51% {
+		transform: translate3d(0,-100%,0);
+		opacity: 0;
+	}
+	100% {
+		transform: translate3d(0,0,0);
+		opacity: 1;
+	}
+}
+
+
+.button--rhea {
+	font-family: freight-display-pro, serif;
+	font-weight: 900;
+	font-style: normal;
+	width: 180px;
+	height: 180px;
+	color: #000;
+	background: none;
+}
+
+.button--rhea::before {
+	content: '';
+	z-index: -1;
+	background: #e7e7e7;
+	-webkit-clip-path: polygon(20% 30%, 0 30%, 0 50%, 0 70%, 20% 70%, 50% 70%, 80% 70%, 100% 70%, 100% 50%, 100% 30%, 80% 30%, 50% 30%);
+	clip-path: polygon(20% 30%, 0 30%, 0 50%, 0 70%, 20% 70%, 50% 70%, 80% 70%, 100% 70%, 100% 50%, 100% 30%, 80% 30%, 50% 30%);
+	transition: clip-path 0.4s cubic-bezier(0.3, 1, 0.2, 1), -webkit-clip-path 0.4s cubic-bezier(0.3, 1, 0.2, 1), transform 0.4s cubic-bezier(0.3, 1, 0.2, 1), background 0.4s ease;
+}
+
+.button--rhea:hover::before {
+	background: #000;
+	transform: scale3d(0.7,0.7,1);
+	-webkit-clip-path: polygon(30% 10%, 10% 30%, 30% 50%, 10% 70%, 30% 90%, 50% 70%, 70% 90%, 90% 70%, 70% 50%, 90% 30%, 70% 10%, 50% 30%);
+	clip-path: polygon(30% 10%, 10% 30%, 30% 50%, 10% 70%, 30% 90%, 50% 70%, 70% 90%, 90% 70%, 70% 50%, 90% 30%, 70% 10%, 50% 30%);
+}
+
+.button--rhea span {
+	display: block;
+	transition: transform 0.4s cubic-bezier(0.3, 1, 0.2, 1), opacity 0.05s;
+}
+
+.button--rhea:hover span {
+	transform: scale3d(0.1,0.1,1);
+	opacity: 0;
+	transition-delay: 0s, 0.35s;
+}
+
+.button--telesto {
+	overflow: hidden;
+	font-family: obvia, sans-serif;
+	font-weight: 800;
+	font-style: italic;
+	font-size: 1.15rem;
+	color: #fff;
+}
+
+.button--telesto span {
+	display: block;
+	position: relative;
+	z-index: 1;
+}
+
+.button--telesto > span {
+	overflow: hidden;
+	mix-blend-mode: difference;
+}
+
+.button--telesto:hover > span > span {
+	animation: MoveRightInitial 0.1s forwards, MoveRightEnd 0.3s forwards 0.2s;
+}
+
+@keyframes MoveRightInitial {
+	to {
+		transform: translate3d(105%,0,0);
+	}
+}
+
+@keyframes MoveRightEnd {
+	from {
+		transform: translate3d(-100%,0,0);
+	}
+	to {
+		transform: translate3d(0,0,0);
+	}
+}
+
+.button--telesto::before,
+.button--telesto::after {
+	content: '';
+	background: #000;
+}
+
+.button--telesto::before {
+	width: 135%;
+	-webkit-clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 0%);
+	clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0% 0%);
+	transform: translate3d(-100%,0,0);
+}
+
+.button--telesto:hover::before {
+	transform: translate3d(0,0,0);
+	transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.button--telesto::after {
+	width: 105%;
+	transform: translate3d(100%,0,0);
+	transition: transform 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}
+
+.button--telesto:hover::after {
+	transform: translate3d(0,0,0);
+	transition: transform 0.01s 0.3s cubic-bezier(0.7, 0, 0.2, 1);
+}

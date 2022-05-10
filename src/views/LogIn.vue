@@ -42,9 +42,8 @@ export default {
                   <ul>
                     <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                   </ul>
-                  <div class="col-md-6">
+                  <div class="col-md-6 mt-3">
                     <label>Email:</label>
-
                     <input class="form-control" type="email" v-model="newSessionParams.email" />
                   </div>
                   <div class="col-md-6 mt-3">
@@ -54,7 +53,9 @@ export default {
                 </div>
               </h3>
               <br />
-              <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+              <li class="content__item">
+                <button class="button button--calypso" @click="this.submit()"><span>Login</span></button>
+              </li>
             </div>
           </div>
         </div>
