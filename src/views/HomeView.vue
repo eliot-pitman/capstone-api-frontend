@@ -149,7 +149,12 @@ export default {
         <div class="m-4 m-lg-5">
           <h2 v-show="favorites.length > 1" class="fs-4">You Have {{ favorites.length }} Favorited Airports</h2>
           <h2 v-show="favorites.length === 1" class="fs-4">You Have 1 Favorited Airport</h2>
-          <button v-show="favorites.length === 0" @click="goToCreate">Add a Favorite Here</button>
+
+          <li class="content__item mt-3">
+            <button v-show="favorites.length === 0" @click="goToCreate()" class="button button--pandora">
+              <span>Add a Favorite Airport</span>
+            </button>
+          </li>
         </div>
       </div>
     </div>

@@ -138,6 +138,7 @@ export default {
       </li>
     </div>
   </div>
+  <!-- back to home -->
   <li class="content__item mt-3">
     <button @click="goHome()" class="button button--pandora"><span>Back to Favorites</span></button>
   </li>
