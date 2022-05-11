@@ -16,6 +16,11 @@ export default {
 <template>
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container px-lg-5">
+      <img
+        id="logo"
+        src="https://cdn.icon-icons.com/icons2/3191/PNG/512/cyclone_weather_world_time_icon_194253.png"
+        alt="_blank"
+      />
       <a class="navbar-brand" href="/">METAR</a>
       <button
         class="navbar-toggler"
@@ -54,5 +59,9 @@ export default {
 .navbar-brand {
   font-family: "Bungee", cursive;
   font-size: 2cm;
+}
+#logo {
+  height: 100px;
+  width: 100px;
 }
 </style>

@@ -52,7 +52,7 @@ export default {
           <h3 class="fs-4">
             <div class="row mt-2">
               <div class="col-md-6">
-                <span>Home Aiport: {{ user.home_airport }}</span>
+                <span>Home Airport: {{ user.home_airport }}</span>
               </div>
               <br />
               <br />
