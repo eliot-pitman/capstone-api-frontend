@@ -69,6 +69,7 @@ export default {
     createHome: function (airport) {
       this.newUserParams.home_airport = airport;
       this.homeAdded = true;
+      this.search = false;
       this.selectedHomeAirport = airport;
       console.log("added home", airport);
     },

@@ -49,6 +49,7 @@ export default {
 <style>
 #app {
   text-align: center;
+  background: white;
 }
 .navbar-brand {
   font-family: "Bungee", cursive;
