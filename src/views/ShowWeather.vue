@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import moment from "moment";
 export default {
   data: function () {
     return {
@@ -33,6 +34,10 @@ export default {
         }
       }
     },
+    zuluToLocal: function (utcDt, utcDtFormat) {
+      var toDt = moment.utc(utcDt, utcDtFormat).toDate();
+      return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
+    },
   },
 };
 </script>
@@ -43,6 +48,8 @@ export default {
       <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
         <div class="m-4 m-lg-5">
           <h1 class="display-5 fw-bold">Full Weather for {{ this.$route.params.icao }}</h1>
+          <h4>Last Reported: {{ this.zuluToLocal(weather.meta.timestamp) }} Local Time</h4>
+          <p>UTC: {{ weather.meta.timestamp }}</p>
         </div>
       </div>
     </div>

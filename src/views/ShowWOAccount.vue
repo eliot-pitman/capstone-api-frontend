@@ -1,5 +1,6 @@
 <script>
 import axios from "axios";
+import moment from "moment";
 export default {
   data: function () {
     return {
@@ -56,6 +57,10 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+    zuluToLocal: function (utcDt, utcDtFormat) {
+      var toDt = moment.utc(utcDt, utcDtFormat).toDate();
+      return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
+    },
   },
 };
 </script>
@@ -87,12 +92,9 @@ export default {
 
     <div v-if="search === false">
       <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
-        <h1>
-          <span class="individual-airport">{{ airport.name }}</span>
-        </h1>
         <li class="content__item">
-          <button class="button button--anthe mt-3" @click="getWeather(airport.iata, airport)">
-            <span>View Weather</span>
+          <button class="button button--pandora mt-3" @click="getWeather(airport.iata, airport)">
+            <span>{{ airport.name }}</span>
           </button>
         </li>
       </div>
@@ -104,6 +106,8 @@ export default {
           <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
             <div class="m-4 m-lg-5">
               <h1 class="display-5 fw-bold">Full Weather for {{ currentAirport.name }}</h1>
+              <h4>Last Reported: {{ this.zuluToLocal(weather.meta.timestamp) }} Local Time</h4>
+              <p>UTC: {{ weather.meta.timestamp }}</p>
             </div>
           </div>
         </div>

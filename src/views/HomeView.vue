@@ -1,6 +1,6 @@
 <script>
 import axios from "axios";
-// import moment from "moment";
+import moment from "moment";
 export default {
   data: function () {
     return {
@@ -91,6 +91,10 @@ export default {
     },
     goShow: function (IATA) {
       this.$router.push("/weather/" + IATA);
+    },
+    zuluToLocal: function (utcDt, utcDtFormat) {
+      var toDt = moment.utc(utcDt, utcDtFormat).toDate();
+      return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
     },
   },
 };

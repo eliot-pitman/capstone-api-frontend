@@ -128,18 +128,17 @@ export default {
   <!-- aiport options -->
   <div v-if="search === true">
     <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
-      <h1>
-        <span class="individual-airport">{{ airport.name }}</span>
-      </h1>
       <li class="content__item">
-        <button class="button button--anthe mt-3" @click="searchFavorites(airport.iata)">
-          <span>Add Airport</span>
+        <button class="button button--pandora mt-3" @click="searchFavorites(airport.iata)">
+          <span>{{ airport.name }}</span>
         </button>
       </li>
     </div>
   </div>
   <!-- back to home -->
-  <li class="content__item mt-3">
-    <button @click="goHome()" class="button button--pandora"><span>Back to Favorites</span></button>
-  </li>
+  <footer>
+    <li class="content__item mt-3">
+      <button @click="goHome()" class="button button--anthe mt-3"><span>Back to Favorites</span></button>
+    </li>
+  </footer>
 </template>
