@@ -20,11 +20,15 @@ export default {
       this.user = response.data;
       console.log("user", response.data);
     });
-    if (this.user.avitar) {
-      this.isProfileImg = true;
-    }
+    // if (this.user.avitar) {
+    //   this.isProfileImg = true;
+    // }
   },
-  methods: {},
+  methods: {
+    goUpdate: function () {
+      this.$router.push("/update");
+    },
+  },
 };
 </script>
 
@@ -32,10 +36,9 @@ export default {
   <div class="d-flex flex-column align-items-center text-center p-3 py-5">
     <img v-show="this.isProfileImg === true" id="profile-img" class="rounded-circle mt-5" :src="`${user.avitar}`" />
     <img
-      v-show="this.isProfileImg === false"
       id="profile-img"
       class="rounded-circle mt-5"
-      src="https://www.pngitem.com/pimgs/m/200-2008473_pilot-with-hat-and-tie-pilot-silhouette-transparent.png"
+      src="https://i.etsystatic.com/10919371/r/il/a8b127/1598401416/il_794xN.1598401416_jji7.jpg"
     />
     <span class="font-weight-bold">{{ user.name }}</span>
     <span class="text-black-50">{{ user.email }}</span>
@@ -64,7 +67,11 @@ export default {
             </div>
           </h3>
           <br />
-          <a class="btn btn-primary btn-lg" href="/update">Change Info</a>
+          <li class="content__item">
+            <button class="button button--pandora mt-3" @click="goUpdate">
+              <span>Update Info</span>
+            </button>
+          </li>
         </div>
       </div>
     </div>

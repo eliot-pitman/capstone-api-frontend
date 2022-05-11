@@ -5,10 +5,14 @@ export default {
     return {
       message: "User Info:",
       user: [],
-      updateParams: {},
+      updateParams: { home_airport: "" },
       status: "",
       isProfileImg: false,
       errors: [],
+      airportFeed: "",
+      isError: false,
+      search: false,
+      input: "",
     };
   },
   created: function () {
@@ -33,6 +37,33 @@ export default {
           this.errors = error.response.data.errors;
         });
     },
+    getAirportSearch: function () {
+      this.search = true;
+      this.isError = false;
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/search/station?text=${this.input}&n=3&airport=true&reporting=true&format=json`, {
+          headers,
+        })
+        .then((response) => {
+          this.airportFeed = response.data;
+          console.log("active search", response.data);
+          console.log("search", this.airportFeed);
+        })
+        .catch((error) => {
+          console.log("error", error.response.status, error.response.statusText);
+          this.status = "Airport Not Found";
+          this.error = true;
+          this.isError = true;
+          this.search = false;
+        });
+    },
+    updateHome: function (iata) {
+      this.updateParams.home_airport = iata;
+      this.userUpdate();
+    },
   },
 };
 </script>
@@ -49,7 +80,7 @@ export default {
     <span class="font-weight-bold">{{ user.name }}</span>
     <span class="text-black-50">{{ user.email }}</span>
   </div>
-  <form v-on:submit.prevent="userUpdate()">
+  <div>
     <header class="py-2 user-info">
       <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
@@ -61,38 +92,51 @@ export default {
                 <ul>
                   <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                 </ul>
-                <div class="col-md-6">
+                <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Name" v-model="updateParams.name" />
                 </div>
-                <br />
-                <br />
-                <div class="col-md-6">
+
+                <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Email" v-model="updateParams.email" />
                 </div>
-                <br />
-                <br />
-                <div class="col-md-6">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Home Airport"
-                    v-model="updateParams.home_airport"
-                  />
-                </div>
-                <br />
-                <br />
-                <div class="col-md-6">
+
+                <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Username" v-model="updateParams.username" />
+                </div>
+
+                <div class="col-md-6 mt-3">
+                  <input type="text" class="form-control" placeholder="Home Airport" v-model="input" />
+                  <!-- airport search button -->
+                  <li class="content__item">
+                    <button class="button button--anthe mt-3" @click="getAirportSearch()">
+                      <span>Search Airports</span>
+                    </button>
+                  </li>
+                </div>
+
+                <!-- home airport options after search -->
+                <div v-if="search === true">
+                  <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
+                    <li class="content__item">
+                      <button id="search" class="button button--pandora mt-3" @click="updateHome(airport.iata)">
+                        <span>{{ airport.name }}</span>
+                      </button>
+                    </li>
+                  </div>
                 </div>
               </div>
             </h3>
             <br />
-            <input class="btn btn-primary btn-lg" type="submit" value="update" />
+            <li class="content__item">
+              <button class="button button--pandora mt-3" @click="userUpdate()">
+                <span>Save</span>
+              </button>
+            </li>
           </div>
         </div>
       </div>
     </header>
-  </form>
+  </div>
 </template>
 
 <style>
