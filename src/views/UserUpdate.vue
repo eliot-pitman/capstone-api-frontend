@@ -7,7 +7,7 @@ export default {
     return {
       message: "User Info:",
       user: [],
-      updateParams: { home_airport: "" },
+      updateParams: { home_airport: null },
       status: "",
       isProfileImg: false,
       errors: [],
@@ -117,9 +117,12 @@ export default {
 
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Home Airport" v-model="input" />
+                  <!-- alerts -->
+                  <span v-if="this.search === true" class="alert alert-info mt-3">Select Airport Below</span>
+                  <span v-if="this.isError === true" class="alert alert-warning mt-3">{{ this.status }}</span>
                   <!-- airport search button -->
                   <li class="content__item">
-                    <button class="button button--anthe mt-3" @click="getAirportSearch()">
+                    <button class="button button--anthe mt-4" @click="getAirportSearch()">
                       <span>Search Airports</span>
                     </button>
                   </li>
@@ -127,7 +130,7 @@ export default {
 
                 <!-- home airport options after search -->
                 <div v-if="search === true">
-                  <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
+                  <div class="display mt-5" v-for="airport in airportFeed" v-bind:key="airport.id">
                     <li class="content__item">
                       <button id="search" class="button button--pandora mt-3" @click="updateHome(airport.iata)">
                         <span>{{ airport.name }}</span>

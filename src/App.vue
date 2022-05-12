@@ -21,7 +21,8 @@ export default {
         src="https://cdn.icon-icons.com/icons2/3191/PNG/512/cyclone_weather_world_time_icon_194253.png"
         alt="_blank"
       />
-      <a class="navbar-brand" href="/">METAR</a>
+      <a v-if="!isLoggedIn" class="navbar-brand" href="/">METAR</a>
+      <a v-if="isLoggedIn" class="navbar-brand" href="/home">METAR</a>
       <button
         class="navbar-toggler"
         type="button"

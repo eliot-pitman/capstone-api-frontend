@@ -72,8 +72,8 @@ export default {
     },
     getAirportSearch: function () {
       this.search = true;
-      this.isLoading = true;
       this.isError = false;
+      this.isLoading = true;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
