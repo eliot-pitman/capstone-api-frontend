@@ -1,5 +1,7 @@
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   data: function () {
     return {
@@ -16,12 +18,15 @@ export default {
       search: false,
       input: "",
       isError: false,
+      isLoading: false,
     };
   },
   created: function () {
+    this.isLoading = true;
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
       console.log("favorites", response.data);
+      this.isLoading = false;
     });
   },
   methods: {
@@ -39,6 +44,7 @@ export default {
       console.log("search favorites ispresent", this.isPresent);
       if (this.isPresent === false) {
         this.isPresent = false;
+
         this.addAirport(airportIATA);
       }
     },
@@ -66,6 +72,7 @@ export default {
     },
     getAirportSearch: function () {
       this.search = true;
+      this.isLoading = true;
       this.isError = false;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
@@ -78,6 +85,7 @@ export default {
           this.airportFeed = response.data;
           console.log("active search", response.data);
           console.log("search", this.airportFeed);
+          this.isLoading = false;
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
@@ -85,8 +93,12 @@ export default {
           this.error = true;
           this.isError = true;
           this.search = false;
+          this.isLoading = false;
         });
     },
+  },
+  components: {
+    Loading,
   },
 };
 </script>
@@ -141,4 +153,5 @@ export default {
       <button @click="goHome()" class="button button--anthe mt-3"><span>Back to Favorites</span></button>
     </li>
   </footer>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>

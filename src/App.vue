@@ -48,6 +48,7 @@ export default {
       </div>
     </div>
   </nav>
+
   <router-view />
 </template>
 

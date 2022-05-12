@@ -1,5 +1,7 @@
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   data: function () {
     return {
@@ -13,12 +15,15 @@ export default {
       isError: false,
       search: false,
       input: "",
+      isLoading: false,
     };
   },
   created: function () {
+    this.isLoading = true;
     axios.get("/users").then((response) => {
       this.user = response.data;
       console.log("user", response.data);
+      this.isLoading = false;
     });
     if (this.user.avitar) {
       this.isProfileImg = true;
@@ -40,6 +45,7 @@ export default {
     getAirportSearch: function () {
       this.search = true;
       this.isError = false;
+      this.isLoading = true;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -51,6 +57,7 @@ export default {
           this.airportFeed = response.data;
           console.log("active search", response.data);
           console.log("search", this.airportFeed);
+          this.isLoading = false;
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
@@ -58,12 +65,16 @@ export default {
           this.error = true;
           this.isError = true;
           this.search = false;
+          this.isLoading = false;
         });
     },
     updateHome: function (iata) {
       this.updateParams.home_airport = iata;
       this.userUpdate();
     },
+  },
+  components: {
+    Loading,
   },
 };
 </script>
@@ -137,6 +148,7 @@ export default {
       </div>
     </header>
   </div>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
 <style>

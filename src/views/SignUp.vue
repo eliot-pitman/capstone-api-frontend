@@ -1,5 +1,7 @@
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   data: function () {
@@ -12,6 +14,9 @@ export default {
       selectedHomeAirport: "",
       isEditing: false,
       homeAdded: false,
+      isError: false,
+      isHomeError: false,
+      isLoading: false,
     };
   },
   beforeMount() {
@@ -28,7 +33,6 @@ export default {
     }
     next();
   },
-
   methods: {
     userCreate: function () {
       this.isEditing = false;
@@ -41,9 +45,11 @@ export default {
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
+          this.isError = true;
         });
     },
     getAirportSearch: function () {
+      this.isLoading = true;
       this.search = true;
       this.isError = false;
       const headers = {
@@ -57,13 +63,16 @@ export default {
           this.airportFeed = response.data;
           console.log("active search", response.data);
           console.log("search", this.airportFeed);
+          this.isLoading = false;
         })
         .catch((error) => {
           console.log("error", error.response.status, error.response.statusText);
           this.status = "Airport Not Found";
           this.error = true;
           this.isError = true;
+          this.isHomeError = true;
           this.search = false;
+          this.isLoading = false;
         });
     },
     createHome: function (airport) {
@@ -79,6 +88,9 @@ export default {
       event.returnValue = "";
     },
   },
+  components: {
+    Loading,
+  },
 };
 </script>
 
@@ -92,26 +104,37 @@ export default {
             <br />
             <h3 class="fs-4">
               <div class="row mt-2">
-                <ul>
-                  <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
-                </ul>
+                <div v-for="error in errors" :key="error.id" class="alert alert-warning mt-3" role="alert">
+                  {{ error }}
+                </div>
+
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Name" v-model="newUserParams.name" />
                 </div>
 
                 <div class="col-md-6 mt-3">
-                  <input type="text" class="form-control" placeholder="Email" v-model="newUserParams.email" />
-                </div>
-
-                <div class="col-md-6 mt-3">
-                  <input type="password" class="form-control" placeholder="Password" v-model="newUserParams.password" />
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Email (Required)"
+                    v-model="newUserParams.email"
+                  />
                 </div>
 
                 <div class="col-md-6 mt-3">
                   <input
                     type="password"
                     class="form-control"
-                    placeholder="Password Confirmation"
+                    placeholder="Password (Required)"
+                    v-model="newUserParams.password"
+                  />
+                </div>
+
+                <div class="col-md-6 mt-3">
+                  <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password Confirmation (Required)"
                     v-model="newUserParams.password_confirmation"
                   />
                 </div>
@@ -119,21 +142,23 @@ export default {
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Username" v-model="newUserParams.username" />
                 </div>
-                <div class="col-md-6 mt-3">
+                <!-- <div class="col-md-6 mt-3">
                   <input
                     type="text"
                     class="form-control"
                     placeholder="~Add img address for avitar~ :')"
                     v-model="newUserParams.avitar"
                   />
-                </div>
+                </div> -->
                 <!-- selected home airport banner -->
                 <div v-if="homeAdded === true" class="alert alert-success mt-3" role="alert">
-                  Added Home Airport: {{ this.selectedHomeAirport }}
+                  Home Airport: {{ this.selectedHomeAirport }}
                 </div>
 
-                <div class="col-md-6 mt-3">
-                  <input type="text" class="form-control" placeholder="Home Airport" v-model="input" />
+                <div v-if="isHomeError === true" class="alert alert-warning mt-3" role="alert">{{ this.status }}</div>
+
+                <div v-if="homeAdded === false" class="col-md-6 mt-3">
+                  <input type="text" class="form-control" placeholder="Home Airport (Required)" v-model="input" />
                   <!-- airport search button -->
                   <li class="content__item">
                     <button class="button button--anthe mt-3" @click="getAirportSearch()">
@@ -163,6 +188,7 @@ export default {
       </div>
     </header>
   </div>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
 <style scoped></style>

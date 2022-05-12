@@ -1,6 +1,9 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
+
 export default {
   data: function () {
     return {
@@ -11,15 +14,19 @@ export default {
       user: [],
       homeAirport: "",
       isHomePresent: false,
+      isLoading: false,
     };
   },
+
   created: function () {
+    this.isLoading = true;
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
       console.log("favorites", response.data);
       this.favorites.forEach((favoriteAirportInfo) => {
         this.getWeather(favoriteAirportInfo.airport_iata);
         this.info.push(favoriteAirportInfo);
+        this.isLoading = false;
       });
     });
     this.getUser();
@@ -96,6 +103,9 @@ export default {
       var toDt = moment.utc(utcDt, utcDtFormat).toDate();
       return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
     },
+  },
+  components: {
+    Loading,
   },
 };
 </script>
@@ -214,6 +224,7 @@ export default {
       </div>
     </div>
   </div>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
 <style>
