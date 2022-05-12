@@ -109,7 +109,7 @@ export default {
                 </div>
 
                 <div class="col-md-6 mt-3">
-                  <input type="text" class="form-control" placeholder="Name" v-model="newUserParams.name" />
+                  <input type="text" class="form-control" placeholder="Name (Required)" v-model="newUserParams.name" />
                 </div>
 
                 <div class="col-md-6 mt-3">

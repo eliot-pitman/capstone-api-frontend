@@ -23,10 +23,10 @@ export default {
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
       console.log("favorites", response.data);
+      this.isLoading = false;
       this.favorites.forEach((favoriteAirportInfo) => {
         this.getWeather(favoriteAirportInfo.airport_iata);
         this.info.push(favoriteAirportInfo);
-        this.isLoading = false;
       });
     });
     this.getUser();
@@ -149,7 +149,7 @@ export default {
               Celcius
             </p>
 
-            <button @click="goShow(homeAirport.station)" class="button button--telesto">
+            <button @click="this.goShow(homeAirport.station)" class="button button--telesto">
               <span>Full Weather</span>
             </button>
           </div>
