@@ -105,8 +105,10 @@ export default {
 
 <template>
   <!-- alerts  -->
-  <div v-if="this.search === true" class="alert alert-info mt-5">Select Airport Below</div>
-  <div v-if="this.isError === true" class="alert alert-warning mt-5">{{ this.status }}</div>
+  <div v-if="this.isError === false">
+    <span v-if="this.search === true" class="alert alert-info mt-5">Select Airport Below</span>
+  </div>
+  <span v-if="this.isError === true" class="alert alert-warning mt-5">{{ this.status }}</span>
   <!-- search bar -->
   <div class="container mt-5">
     <div class="p-3 bg-light rounded-3 text-center">
@@ -126,17 +128,17 @@ export default {
     </div>
   </div>
   <!-- success banner -->
-  <div v-if="isActive === true" class="alert alert-success" role="alert">
+  <span v-if="isActive === true" class="alert alert-success mt-3" role="alert">
     Added Airport: {{ addedAirport.airport_name }}
-  </div>
+  </span>
   <!-- already favorited banner -->
-  <div v-if="isPresent === true" class="alert alert-warning" role="alert">
+  <span v-if="isPresent === true" class="alert alert-warning mt-3" role="alert">
     {{ status }}
-  </div>
+  </span>
   <!-- error banner -->
-  <div v-if="error === true" class="alert alert-warning" role="alert">
+  <span v-if="error === true" class="alert alert-warning mt-3" role="alert">
     {{ status }}
-  </div>
+  </span>
   <!-- aiport options -->
   <div v-if="search === true">
     <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">

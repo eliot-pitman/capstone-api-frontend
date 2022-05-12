@@ -1,6 +1,8 @@
 <script>
 import axios from "axios";
 import moment from "moment";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   data: function () {
     return {
@@ -13,11 +15,14 @@ export default {
       input: "",
       airportFeed: "",
       currentAirport: "",
+      isLoading: false,
+      isError: false,
     };
   },
   created: function () {},
   methods: {
     getWeather: function (IATA, airportInfo) {
+      this.isLoading = true;
       this.currentAirport = airportInfo;
       console.log("current airport", this.currentAirport);
       const headers = {
@@ -29,6 +34,7 @@ export default {
           this.weather = response.data;
           console.log("current weather", response.data);
           this.search = true;
+          this.isLoading = false;
         })
         .then(this.airportInfoGet(this.airportCode));
     },
@@ -43,6 +49,8 @@ export default {
     },
     getAirportSearch: function () {
       this.search = false;
+      this.isLoading = true;
+      this.isError = false;
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -54,13 +62,24 @@ export default {
           this.airportFeed = response.data;
           console.log("active search", response.data);
           console.log("search", this.airportFeed);
+          this.isLoading = false;
+          if (this.airportFeed.length === 0) {
+            this.isError = true;
+          }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false;
+          this.isError = true;
+        });
     },
     zuluToLocal: function (utcDt, utcDtFormat) {
       var toDt = moment.utc(utcDt, utcDtFormat).toDate();
       return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
     },
+  },
+  components: {
+    Loading,
   },
 };
 </script>
@@ -85,10 +104,14 @@ export default {
       </div>
     </div>
 
-    <div v-if="search === true" class="alert alert-info mt-5">
+    <span v-if="search === true" class="alert alert-info mt-5">
       <strong>Info Below</strong>
       Scroll down to get the full weather report.
-    </div>
+    </span>
+    <span v-if="isError === true" class="alert alert-warning mt-5">
+      <strong>oops!</strong>
+      Airport Not Found
+    </span>
 
     <div v-if="search === false">
       <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
@@ -213,7 +236,7 @@ export default {
           </div>
         </div>
       </div>
-      <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
+      <span v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</span>
       <div id="show-weather">
         <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
         <h1 v-show="toggle === true">
@@ -222,6 +245,7 @@ export default {
       </div>
     </div>
   </div>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
 <style></style>
