@@ -22,7 +22,7 @@ export default {
     this.isLoading = true;
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
-      console.log("favorites", response.data);
+      // console.log("favorites", response.data);
       this.isLoading = false;
       this.favorites.forEach((favoriteAirportInfo) => {
         this.getWeather(favoriteAirportInfo.airport_iata);
@@ -38,12 +38,12 @@ export default {
     getUser: function () {
       axios.get("/users").then((response) => {
         this.user = response.data;
-        console.log("user", response.data);
+        // console.log("user", response.data);
         this.getHomeWeather();
       });
     },
     deleteFavorite: function (airport_id) {
-      console.log(airport_id);
+      // console.log(airport_id);
       axios
         .delete("/favorites/" + airport_id)
         .then((response) => {
@@ -51,7 +51,7 @@ export default {
           window.location.reload();
         })
         .catch((error) => {
-          console.log("error", error.response.status, error.response.statusText);
+          // console.log("error", error.response.status, error.response.statusText);
           this.status = error.response.status;
         });
     },
@@ -61,8 +61,8 @@ export default {
       };
       axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
         this.weatherArray.push(response.data);
-        console.log("current Favorite Airport Weather", response.data);
-        console.log("weatherArray", this.weatherArray);
+        // console.log("current Favorite Airport Weather", response.data);
+        // console.log("weatherArray", this.weatherArray);
       });
     },
     getHomeWeather: function () {
@@ -72,12 +72,12 @@ export default {
       };
       axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
         this.homeAirport = response.data;
-        console.log("Home Airport", response.data);
+        // console.log("Home Airport", response.data);
         this.isHomePresent = true;
       });
     },
     searchByICAOName: function (obj, value) {
-      // console.log("current favorite loop", obj);
+      console.log("current favorite loop", obj);
       // console.log("ICAO value loop", value);
       for (var i = 0; i < obj.length; i++) {
         // console.log("obj[i].airport_icoa", obj[i].airport_icao, "obj[i]", obj[i]);

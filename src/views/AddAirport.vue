@@ -25,7 +25,7 @@ export default {
     this.isLoading = true;
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
-      console.log("favorites", response.data);
+      // console.log("favorites", response.data);
       this.isLoading = false;
     });
   },
@@ -33,7 +33,7 @@ export default {
     searchFavorites: function (airportIATA) {
       this.isPresent = false;
       this.favorites.forEach((favorite) => {
-        console.log(favorite.airport_iata, airportIATA);
+        // console.log(favorite.airport_iata, airportIATA);
         if (favorite.airport_iata === airportIATA) {
           this.status = "This is Already Favorited";
           console.log("status", this.status);
@@ -41,7 +41,7 @@ export default {
           return;
         }
       });
-      console.log("search favorites ispresent", this.isPresent);
+      // console.log("search favorites ispresent", this.isPresent);
       if (this.isPresent === false) {
         this.isPresent = false;
 
@@ -49,12 +49,12 @@ export default {
       }
     },
     addAirport: function (IATA) {
-      console.log("ispresent", this.isPresent, IATA);
+      // console.log("ispresent", this.isPresent, IATA);
 
       axios
         .post("/favorites", { iata: IATA })
         .then((response) => {
-          console.log("success", response.data, IATA);
+          // console.log("success", response.data, IATA);
           this.addedAirport = response.data;
           this.isActive = true;
           this.error = false;
@@ -83,8 +83,8 @@ export default {
         })
         .then((response) => {
           this.airportFeed = response.data;
-          console.log("active search", response.data);
-          console.log("search", this.airportFeed);
+          // console.log("active search", response.data);
+          // console.log("search", this.airportFeed);
           this.isLoading = false;
         })
         .catch((error) => {

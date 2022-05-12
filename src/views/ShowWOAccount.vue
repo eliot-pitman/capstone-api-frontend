@@ -24,7 +24,7 @@ export default {
     getWeather: function (IATA, airportInfo) {
       this.isLoading = true;
       this.currentAirport = airportInfo;
-      console.log("current airport", this.currentAirport);
+      // console.log("current airport", this.currentAirport);
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -32,7 +32,7 @@ export default {
         .get(`https://avwx.rest/api/metar/${IATA}`, { headers })
         .then((response) => {
           this.weather = response.data;
-          console.log("current weather", response.data);
+          // console.log("current weather", response.data);
           this.search = true;
           this.isLoading = false;
         })
@@ -44,7 +44,7 @@ export default {
       };
       axios.get(`https://airport-info.p.rapidapi.com/airport?iata=${code}`, { headers }).then((response) => {
         this.airportInfo = response.data;
-        console.log("airport info", response.data);
+        // console.log("airport info", response.data);
       });
     },
     getAirportSearch: function () {
@@ -60,8 +60,8 @@ export default {
         })
         .then((response) => {
           this.airportFeed = response.data;
-          console.log("active search", response.data);
-          console.log("search", this.airportFeed);
+          // console.log("active search", response.data);
+          // console.log("search", this.airportFeed);
           this.isLoading = false;
           if (this.airportFeed.length === 0) {
             this.isError = true;

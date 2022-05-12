@@ -14,11 +14,11 @@ export default {
   created: function () {
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
-      console.log("favorites", response.data);
+      // console.log("favorites", response.data);
     });
     axios.get("/users").then((response) => {
       this.user = response.data;
-      console.log("user", response.data);
+      // console.log("user", response.data);
     });
     // if (this.user.avitar) {
     //   this.isProfileImg = true;

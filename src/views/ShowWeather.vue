@@ -14,7 +14,7 @@ export default {
     this.getWeather(this.$route.params.icao);
     axios.get("/favorites").then((response) => {
       this.favorites = response.data;
-      console.log("favorites", response.data);
+      // console.log("favorites", response.data);
     });
   },
   methods: {
@@ -24,7 +24,7 @@ export default {
       };
       axios.get(`https://avwx.rest/api/metar/${favorite}`, { headers }).then((response) => {
         this.weather = response.data;
-        console.log("current weather", response.data);
+        // console.log("current weather", response.data);
       });
     },
     searchByICAOName: function (obj, value) {

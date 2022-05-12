@@ -36,7 +36,7 @@ export default {
   methods: {
     userCreate: function () {
       this.isEditing = false;
-      console.log("new user", this.newUserParams);
+      // console.log("new user", this.newUserParams);
       axios
         .post("/users", this.newUserParams)
         .then((response) => {
@@ -61,8 +61,8 @@ export default {
         })
         .then((response) => {
           this.airportFeed = response.data;
-          console.log("active search", response.data);
-          console.log("search", this.airportFeed);
+          // console.log("active search", response.data);
+          // console.log("search", this.airportFeed);
           this.isLoading = false;
         })
         .catch((error) => {
@@ -80,7 +80,7 @@ export default {
       this.homeAdded = true;
       this.search = false;
       this.selectedHomeAirport = airport;
-      console.log("added home", airport);
+      // console.log("added home", airport);
     },
     preventNav(event) {
       if (!this.isEditing) return;

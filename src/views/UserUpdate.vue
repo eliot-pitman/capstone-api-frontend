@@ -22,7 +22,7 @@ export default {
     this.isLoading = true;
     axios.get("/users").then((response) => {
       this.user = response.data;
-      console.log("user", response.data);
+      // console.log("user", response.data);
       this.isLoading = false;
     });
     if (this.user.avitar) {
@@ -55,8 +55,8 @@ export default {
         })
         .then((response) => {
           this.airportFeed = response.data;
-          console.log("active search", response.data);
-          console.log("search", this.airportFeed);
+          // console.log("active search", response.data);
+          // console.log("search", this.airportFeed);
           this.isLoading = false;
         })
         .catch((error) => {
