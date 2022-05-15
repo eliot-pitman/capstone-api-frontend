@@ -1,29 +1,38 @@
 <script>
 import axios from "axios";
+import Loading from "vue-loading-overlay";
+import "vue-loading-overlay/dist/vue-loading.css";
 
 export default {
   data: function () {
     return {
       newSessionParams: {},
       errors: [],
+      isLoading: false,
     };
   },
   methods: {
     submit: function () {
+      this.isLoading = true;
       axios
         .post("/sessions", this.newSessionParams)
         .then((response) => {
           axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
           localStorage.setItem("jwt", response.data.jwt);
           this.$router.push("/home");
+          this.isLoading = false;
         })
         .catch((error) => {
           console.log(error.response);
           this.errors = ["Invalid email or password."];
           this.email = "";
           this.password = "";
+          this.isLoading = false;
         });
     },
+  },
+  components: {
+    Loading,
   },
 };
 </script>
@@ -43,7 +52,7 @@ export default {
                     <p v-for="error in errors" v-bind:key="error">{{ error }}</p>
                   </ul>
                   <div class="col-md-6 mt-3">
-                    <input class="form-control" placeholder="Email" type="email" v-model="newSessionParams.email" />
+                    <input class="form-control" placeholder="Email" type="text" v-model="newSessionParams.email" />
                   </div>
                   <div class="col-md-6 mt-3">
                     <input
@@ -65,4 +74,5 @@ export default {
       </header>
     </form>
   </div>
+  <loading :active="isLoading" :is-full-page="true"></loading>
 </template>

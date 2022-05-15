@@ -6,7 +6,7 @@ import "vue-loading-overlay/dist/vue-loading.css";
 export default {
   data: function () {
     return {
-      newUserParams: { home_airport: this.selectedHomeAirport },
+      newUserParams: { home_airport: this.selectedHomeAirport, email: this.email },
       errors: [],
       search: false,
       airportFeed: "",
@@ -17,7 +17,16 @@ export default {
       isError: false,
       isHomeError: false,
       isLoading: false,
+      msg: [],
+      email: "",
+      noGo: false,
     };
+  },
+  watch: {
+    email: function (value) {
+      this.newUserParams.email = value;
+      this.validateEmail(value);
+    },
   },
   beforeMount() {
     window.addEventListener("beforeunload", this.preventNav);
@@ -36,16 +45,19 @@ export default {
   methods: {
     userCreate: function () {
       this.isEditing = false;
+      this.isLoading = true;
       // console.log("new user", this.newUserParams);
       axios
         .post("/users", this.newUserParams)
         .then((response) => {
           console.log("new user params", response.data);
           this.$router.push("/login");
+          this.isLoading = false;
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
           this.isError = true;
+          this.isLoading = false;
         });
     },
     getAirportSearch: function () {
@@ -87,7 +99,17 @@ export default {
       event.preventDefault();
       event.returnValue = "";
     },
+    validateEmail: function (value) {
+      //eslint-disable-next-line
+      if (/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(value)) {
+        this.msg["email"] = "";
+      } else {
+        this.msg["email"] = "Invalid Email Address";
+        this.noGo = true;
+      }
+    },
   },
+
   components: {
     Loading,
   },
@@ -111,16 +133,10 @@ export default {
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Name (Required)" v-model="newUserParams.name" />
                 </div>
-
                 <div class="col-md-6 mt-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Email (Required)"
-                    v-model="newUserParams.email"
-                  />
+                  <input type="email" class="form-control" placeholder="Email (Required)" v-model="email" />
                 </div>
-
+                <small v-if="msg.email">{{ msg.email }}</small>
                 <div class="col-md-6 mt-3">
                   <input
                     type="password"
@@ -191,4 +207,11 @@ export default {
   <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
-<style scoped></style>
+<style scoped>
+small {
+  padding-top: 0px;
+  margin-top: 0px;
+  font-size: 12px;
+  color: red;
+}
+</style>
