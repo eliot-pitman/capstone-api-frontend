@@ -16,6 +16,10 @@
             <h3>
               CSS and HTML built on a bootstrap theme framework, other elements were from a wide variety of sources.
             </h3>
+            <h6>
+              Created by
+              <a href="https://eliotpitman.com" target="_blank">Eliot Pitman</a>
+            </h6>
           </div>
         </div>
       </div>
