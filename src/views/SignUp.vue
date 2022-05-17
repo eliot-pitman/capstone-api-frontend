@@ -133,10 +133,12 @@ export default {
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Name (Required)" v-model="newUserParams.name" />
                 </div>
+
                 <div class="col-md-6 mt-3">
                   <input type="email" class="form-control" placeholder="Email (Required)" v-model="email" />
+                  <small v-if="msg.email">{{ msg.email }}</small>
                 </div>
-                <small v-if="msg.email">{{ msg.email }}</small>
+
                 <div class="col-md-6 mt-3">
                   <input
                     type="password"
