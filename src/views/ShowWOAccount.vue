@@ -67,8 +67,8 @@ export default {
         })
         .then((response) => {
           this.airportFeed = response.data;
-          // console.log("active search", response.data);
-          // console.log("search", this.airportFeed);
+          console.log("active search", response.data);
+          console.log("search", this.airportFeed);
           this.isLoading = false;
           if (this.airportFeed.length === 0) {
             this.isError = true;
@@ -83,6 +83,9 @@ export default {
     zuluToLocal: function (utcDt, utcDtFormat) {
       var toDt = moment.utc(utcDt, utcDtFormat).toDate();
       return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
+    },
+    goToAirportInfo: function (input) {
+      this.$router.push(`/airport/${input}`);
     },
   },
   components: {
@@ -128,6 +131,11 @@ export default {
             <span>{{ airport.name }}</span>
           </button>
         </li>
+        <div>
+          <button class="btn btn-light btn-rounded mt-4 mb-4" @click="goToAirportInfo(airport.icao)">
+            view airport map
+          </button>
+        </div>
       </div>
     </div>
 
