@@ -23,6 +23,7 @@ export default {
   methods: {
     getWeather: function (IATA, airportInfo) {
       this.isLoading = true;
+      this.isError = false;
       this.currentAirport = airportInfo;
       // console.log("current airport", this.currentAirport);
       const headers = {
@@ -36,7 +37,12 @@ export default {
           this.search = true;
           this.isLoading = false;
         })
-        .then(this.airportInfoGet(this.airportCode));
+        .then(this.airportInfoGet(this.airportCode))
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false;
+          this.isError = true;
+        });
     },
     airportInfoGet: function (code) {
       const headers = {
