@@ -22,10 +22,11 @@ export default {
   created: function () {},
   methods: {
     getWeather: function (IATA, airportInfo) {
+      console.log("weather param", IATA);
       this.isLoading = true;
       this.isError = false;
       this.currentAirport = airportInfo;
-      // console.log("current airport", this.currentAirport);
+      console.log("current airport", this.currentAirport);
       const headers = {
         Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
       };
@@ -110,19 +111,20 @@ export default {
       </div>
     </div>
 
-    <span v-if="search === true" class="alert alert-info mt-5">
+    <div v-if="search === true" class="alert alert-info mt-5">
       <strong>Info Below</strong>
       Scroll down to get the full weather report.
-    </span>
-    <span v-if="isError === true" class="alert alert-warning mt-5">
+    </div>
+
+    <div v-if="isError === true" class="alert alert-warning mt-5">
       <strong>oops!</strong>
-      Airport Not Found
-    </span>
+      This Aiport Isn't Supported :(
+    </div>
 
     <div v-if="search === false">
       <div class="display mt-4" v-for="airport in airportFeed" v-bind:key="airport.id">
         <li class="content__item">
-          <button class="button button--pandora mt-3" @click="getWeather(airport.iata, airport)">
+          <button class="button button--pandora mt-3" @click="getWeather(airport.icao, airport)">
             <span>{{ airport.name }}</span>
           </button>
         </li>
@@ -242,7 +244,7 @@ export default {
           </div>
         </div>
       </div>
-      <span v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</span>
+      <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
       <div id="show-weather">
         <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
         <h1 v-show="toggle === true">

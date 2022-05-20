@@ -118,8 +118,8 @@ export default {
                 <div class="col-md-6 mt-3">
                   <input type="text" class="form-control" placeholder="Home Airport" v-model="input" />
                   <!-- alerts -->
-                  <span v-if="this.search === true" class="alert alert-info mt-3">Select Airport Below</span>
-                  <span v-if="this.isError === true" class="alert alert-warning mt-3">{{ this.status }}</span>
+                  <div v-if="this.search === true" class="alert alert-info mt-3">Select Airport Below</div>
+                  <div v-if="this.isError === true" class="alert alert-warning mt-3">{{ this.status }}</div>
                   <!-- airport search button -->
                   <li class="content__item">
                     <button class="button button--anthe mt-4" @click="getAirportSearch()">
