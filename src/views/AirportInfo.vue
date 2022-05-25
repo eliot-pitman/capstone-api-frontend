@@ -11,6 +11,7 @@ export default {
       isLoading: false,
       lat: "",
       long: "",
+      status: "",
     };
   },
 
@@ -38,6 +39,7 @@ export default {
         console.log(error);
         this.isLoading = false;
         this.isError = true;
+        this.status = error;
       });
   },
 
@@ -66,4 +68,5 @@ export default {
 <template>
   <h1 id="map" class="container" style="width: 400px; height: 300px"></h1>
   <loading :active="isLoading" :is-full-page="true"></loading>
+  <div v-if="this.isError === true" class="alert alert-warning mt-5">{{ this.status }}</div>
 </template>
