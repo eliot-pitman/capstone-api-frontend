@@ -9,7 +9,6 @@ import LobbyMETAR from "../views/LobbyMETAR.vue";
 import ShowWeather from "../views/ShowWeather.vue";
 import UserUpdate from "../views/UserUpdate.vue";
 import ShowWOAccount from "../views/ShowWOAccount.vue";
-import AirportInfo from "../views/AirportInfo.vue";
 
 const routes = [
   {
@@ -69,11 +68,6 @@ const routes = [
     path: "/show",
     name: "show",
     component: ShowWOAccount,
-  },
-  {
-    path: "/airport/:id",
-    name: "AirportInfo",
-    component: AirportInfo,
   },
 ];
 
