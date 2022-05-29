@@ -267,11 +267,18 @@ export default {
   <div v-show="search === true" class="card text-white bg-dark mb-3 mt-3">
     <h2 class="card-header">{{ this.currentAirport.name }}'s Information</h2>
     <div class="card-body">
+      <h3 class="card-title">City:</h3>
       <h5 class="card-title">{{ currentAirport.city }}</h5>
-      <h5 class="card-title">{{ currentAirport.website }}</h5>
-      <h5 class="card-title">{{ currentAirport.wiki }}</h5>
-
-      <h5 class="card-title" v-for="runway in runways" :key="runway.id">{{ (runway.ident1, runway.ident2) }}</h5>
+      <h4>
+        <a :href="`${currentAirport.website}`" target="_blank">Website</a>
+      </h4>
+      <h4>
+        <a :href="`${currentAirport.wiki}`" target="_blank">Wiki</a>
+      </h4>
+      <div v-if="runways.length > 0">
+        <h3 class="card-title">Runways:</h3>
+        <h5 class="card-title" v-for="runway in runways" :key="runway.id">{{ runway.ident1 }}, {{ runway.ident2 }}</h5>
+      </div>
 
       <div id="map" class="container" style="width: 400px; height: 300px"></div>
     </div>
