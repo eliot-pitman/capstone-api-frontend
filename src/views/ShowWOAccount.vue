@@ -3,6 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+/* global mapboxgl */
 export default {
   data: function () {
     return {
@@ -17,43 +18,13 @@ export default {
       currentAirport: "",
       isLoading: false,
       isError: false,
+      lat: "",
+      long: "",
+      status: "",
     };
   },
   created: function () {},
   methods: {
-    getWeather: function (IATA, airportInfo) {
-      console.log("weather param", IATA);
-      this.isLoading = true;
-      this.isError = false;
-      this.currentAirport = airportInfo;
-      console.log("current airport", this.currentAirport);
-      const headers = {
-        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
-      };
-      axios
-        .get(`https://avwx.rest/api/metar/${IATA}`, { headers })
-        .then((response) => {
-          this.weather = response.data;
-          // console.log("current weather", response.data);
-          this.search = true;
-          this.isLoading = false;
-        })
-        .then(this.airportInfoGet(this.airportCode))
-        .catch((error) => {
-          console.log(error);
-          this.isLoading = false;
-          this.isError = true;
-        });
-    },
-    airportInfoGet: function (code) {
-      const headers = {
-        "X-RapidAPI-Key": process.env.VUE_APP_AIRPORT_INFO,
-      };
-      axios.get(`https://airport-info.p.rapidapi.com/airport?iata=${code}`, { headers }).then((response) => {
-        this.airportInfo = response.data;
-        // console.log("airport info", response.data);
-      });
-    },
     getAirportSearch: function () {
       this.search = false;
       this.isLoading = true;
@@ -80,6 +51,45 @@ export default {
           this.isError = true;
         });
     },
+    getWeather: function (ICAO, airportInfo) {
+      console.log("weather param", ICAO);
+      this.isLoading = true;
+      this.isError = false;
+      this.currentAirport = airportInfo;
+      console.log("current airport", this.currentAirport);
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/metar/${ICAO}`, { headers })
+        .then((response) => {
+          this.weather = response.data;
+          // console.log("current weather", response.data);
+          this.search = true;
+          this.isLoading = false;
+        })
+        .then(
+          console.log("latitude", this.currentAirport.latitude, this.currentAirport.longitude),
+          this.getMap(this.currentAirport.longitude, this.currentAirport.latitude)
+        )
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false;
+          this.isError = true;
+        });
+    },
+    getMap: function (long, lat) {
+      mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
+      var map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [long, lat],
+        zoom: 11,
+      });
+      console.log(map);
+      console.log("lat and long", this.lat, this.long);
+    },
+
     zuluToLocal: function (utcDt, utcDtFormat) {
       var toDt = moment.utc(utcDt, utcDtFormat).toDate();
       return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
@@ -252,6 +262,7 @@ export default {
           </div>
         </div>
       </div>
+
       <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
       <div id="show-weather">
         <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
