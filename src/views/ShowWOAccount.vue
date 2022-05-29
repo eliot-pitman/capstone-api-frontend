@@ -3,6 +3,7 @@ import axios from "axios";
 import moment from "moment";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
+/* global mapboxgl */
 export default {
   data: function () {
     return {
@@ -17,43 +18,14 @@ export default {
       currentAirport: "",
       isLoading: false,
       isError: false,
+      lat: "",
+      long: "",
+      status: "",
+      runways: [],
     };
   },
-  created: function () {},
+
   methods: {
-    getWeather: function (IATA, airportInfo) {
-      console.log("weather param", IATA);
-      this.isLoading = true;
-      this.isError = false;
-      this.currentAirport = airportInfo;
-      console.log("current airport", this.currentAirport);
-      const headers = {
-        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
-      };
-      axios
-        .get(`https://avwx.rest/api/metar/${IATA}`, { headers })
-        .then((response) => {
-          this.weather = response.data;
-          // console.log("current weather", response.data);
-          this.search = true;
-          this.isLoading = false;
-        })
-        .then(this.airportInfoGet(this.airportCode))
-        .catch((error) => {
-          console.log(error);
-          this.isLoading = false;
-          this.isError = true;
-        });
-    },
-    airportInfoGet: function (code) {
-      const headers = {
-        "X-RapidAPI-Key": process.env.VUE_APP_AIRPORT_INFO,
-      };
-      axios.get(`https://airport-info.p.rapidapi.com/airport?iata=${code}`, { headers }).then((response) => {
-        this.airportInfo = response.data;
-        // console.log("airport info", response.data);
-      });
-    },
     getAirportSearch: function () {
       this.search = false;
       this.isLoading = true;
@@ -80,17 +52,57 @@ export default {
           this.isError = true;
         });
     },
+    getWeather: function (ICAO, airportInfo) {
+      console.log("weather param", ICAO);
+      this.isLoading = true;
+      this.isError = false;
+      this.currentAirport = airportInfo;
+      this.runways = airportInfo.runways;
+      console.log("current airport", this.currentAirport);
+      const headers = {
+        Authorization: "Bearer " + process.env.VUE_APP_AVWX_1,
+      };
+      axios
+        .get(`https://avwx.rest/api/metar/${ICAO}`, { headers })
+        .then((response) => {
+          this.weather = response.data;
+          // console.log("current weather", response.data);
+          this.search = true;
+          this.isLoading = false;
+
+          this.lat = this.currentAirport.latitude;
+          this.long = this.currentAirport.longitude;
+          this.getMap(this.long, this.lat);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.isLoading = false;
+          this.isError = true;
+        });
+    },
+    getMap: function (long, lat) {
+      mapboxgl.accessToken = process.env.VUE_APP_MAPBOX_KEY;
+      var map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v11",
+        center: [long, lat],
+        zoom: 11,
+      });
+      console.log(map);
+      console.log("lat and long", this.lat, this.long);
+    },
+
     zuluToLocal: function (utcDt, utcDtFormat) {
       var toDt = moment.utc(utcDt, utcDtFormat).toDate();
       return moment(toDt).format("YYYY-MM-DD hh:mm:ss A");
-    },
-    goToAirportInfo: function (input) {
-      this.$router.push(`/airport/${input}`);
     },
   },
   components: {
     Loading,
   },
+  // beforeUpdate: () => {
+  //   this.getMap(this.long, this.lat);
+  // },
 };
 </script>
 
@@ -131,11 +143,6 @@ export default {
             <span>{{ airport.name }}</span>
           </button>
         </li>
-        <div>
-          <button class="btn btn-light btn-rounded mt-4 mb-4" @click="goToAirportInfo(airport.icao)">
-            view airport map
-          </button>
-        </div>
       </div>
     </div>
 
@@ -237,30 +244,57 @@ export default {
             </div>
             <div class="text-danger text-center mt-3"><h4>Hourly Precipitation</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>{{ weather.precip_hourly ? weather.precip_hourly + " in." : "No Precipitation Reported" }}</h1>
+              <h3>{{ weather.precip_hourly ? weather.precip_hourly + " in." : "No Precipitation Reported" }}</h3>
             </div>
             <div class="text-danger text-center mt-3"><h4>Snow Depth</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>{{ weather.snow_depth ? weather.snow_depth + " in." : "No Snow Reported" }}</h1>
+              <h3>{{ weather.snow_depth ? weather.snow_depth + " in." : "No Snow Reported" }}</h3>
             </div>
             <div class="text-danger text-center mt-3"><h4>Runway Visibility</h4></div>
             <div class="text-danger text-center mt-2">
-              <h1>
+              <h3>
                 {{ weather.runway_visibility[0] ? weather.runway_visibility[0] : "No Runway Visibility Reported" }}
-              </h1>
+              </h3>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
-      <div id="show-weather">
-        <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
-        <h1 v-show="toggle === true">
-          <h2>{{ weather }}</h2>
-        </h1>
-      </div>
     </div>
   </div>
+
+  <!-- airport information -->
+
+  <div v-show="search === true" class="card text-white bg-dark mb-3 mt-3">
+    <h2 class="card-header">{{ this.currentAirport.name }}'s Information</h2>
+    <div class="card-body">
+      <h3 class="card-title">City:</h3>
+      <h5 class="card-title">{{ currentAirport.city }}</h5>
+      <h4>
+        <a :href="`${currentAirport.website}`" target="_blank">Website</a>
+      </h4>
+      <h4>
+        <a :href="`${currentAirport.wiki}`" target="_blank">Wiki</a>
+      </h4>
+      <div v-if="runways.length > 0">
+        <h3 class="card-title">Runways:</h3>
+        <h5 class="card-title" v-for="runway in runways" :key="runway.id">{{ runway.ident1 }}, {{ runway.ident2 }}</h5>
+      </div>
+
+      <div id="map" class="container" style="width: 400px; height: 300px"></div>
+    </div>
+  </div>
+
+  <!-- unparsed data -->
+  <div v-if="search === true">
+    <div v-if="toggle === true" class="alert alert-info mt-4">Unparsed data below</div>
+    <div id="show-weather">
+      <button class="btn btn-light btn-rounded mt-4 mb-4" @click="toggle = !toggle">See full report...</button>
+      <h1 v-show="toggle === true">
+        <h2>{{ weather }}</h2>
+      </h1>
+    </div>
+  </div>
+
   <loading :active="isLoading" :is-full-page="true"></loading>
 </template>
 
